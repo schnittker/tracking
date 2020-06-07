@@ -13,12 +13,13 @@ import java.util.logging.Logger;
  * @author markus schnittker
  */
 public class Console {
-    private static final ResourceBundle MESSAGES = ResourceBundle.getBundle("i18n.Messages", Locale.getDefault());
     private static final Logger LOGGER = Logger.getLogger(Console.class.getName());
 
+    private final ResourceBundle translations;
     private final SchedulerService schedulerService;
 
     public Console() {
+        translations = ResourceBundle.getBundle("i18n.Console", Locale.getDefault());
         schedulerService = new SchedulerService();
     }
 
@@ -68,7 +69,7 @@ public class Console {
             case "export":
                 schedulerService.export(projectName, period);
             default:
-                System.out.println(MESSAGES.getString("invalid_user_input"));
+                System.out.println(translations.getString("invalid_user_input"));
                 break;
         }
     }

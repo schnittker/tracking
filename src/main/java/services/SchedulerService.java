@@ -18,15 +18,16 @@ import java.util.logging.Logger;
  */
 @SuppressWarnings("all")
 public class SchedulerService {
-    private static final ResourceBundle MESSAGES = ResourceBundle.getBundle("i18n.Messages", Locale.getDefault());
     private static final Logger LOGGER = Logger.getLogger(SchedulerService.class.getName());
 
+    private final ResourceBundle translations;
     private final SchedulerEndpoint schedulerEndpoint;
     private final CsvService csvService;
 
     private List<SchedulerThread> schedulerThreadList = new ArrayList<>();
 
     public SchedulerService() {
+        translations = ResourceBundle.getBundle("i18n.Messages", Locale.getDefault());
         schedulerEndpoint = new SchedulerEndpoint();
         csvService = new CsvService();
     }

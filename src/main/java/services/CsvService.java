@@ -11,14 +11,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
-import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 public class CsvService {
-    private static final ResourceBundle MESSAGES = ResourceBundle.getBundle("i18n.Messages", Locale.getDefault());
     private static final Logger LOGGER = Logger.getLogger(SchedulerService.class.getName());
 
     public CsvService() {

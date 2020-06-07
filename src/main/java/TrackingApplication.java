@@ -1,3 +1,4 @@
+import gui.Gui;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -16,7 +17,7 @@ public class TrackingApplication {
 
         try {
             CommandLine cmd = parser.parse( options, args);
-            if(cmd.hasOption("gui")) {
+            if(cmd.hasOption("g") || cmd.hasOption("gui")) {
                 new Gui().createGui();
             } else {
                 new Console().createConsole();
