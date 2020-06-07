@@ -1,5 +1,5 @@
-./logs/*
-./build
-./.gradle
-./.idea
-./export.csv
+/.gradle/
+/.idea/
+/build/
+/gradle/
+/logs/

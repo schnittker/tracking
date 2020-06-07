@@ -26,8 +26,8 @@ public class SchedulerEndpoint {
 
     public void insert(String projectName, LocalDateTime startTime, LocalDateTime stopTime) {
         try {
-            String sql = "INSERT INTO scheduler (project_name, start_time, stop_time) VALUES('" + projectName + "'," +
-                    Timestamp.valueOf(startTime) + "," + Timestamp.valueOf(stopTime) + ")";
+            String sql = "INSERT INTO scheduler (project_name, start_time, stop_time) VALUES(" +
+                    "'" + projectName + "','" + Timestamp.valueOf(startTime) + "','" + Timestamp.valueOf(stopTime) + "')";
 
             connection.createStatement().executeUpdate(sql);
         } catch (SQLException | NullPointerException e) {

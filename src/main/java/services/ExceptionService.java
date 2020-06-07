@@ -36,21 +36,16 @@ public class ExceptionService {
 
     private void writeLogFile(String className, String message) {
         String path = properties.getProperty("debug_file_path");
-
-        File file = new File(path);
-        if(!file.exists()) {
-            try {
-                new FileOutputStream(path, false);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-
-        try(FileWriter fileWriter = new FileWriter(path, true);
+        File filePath = new File(path);
+        try(FileWriter fileWriter = new FileWriter(filePath, true);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             PrintWriter printWriter = new PrintWriter(bufferedWriter)) {
 
-            printWriter.write(className + ": " + message);
+            if(!filePath.exists()) {
+                filePath.createNewFile();
+            }
+
+            printWriter.write(className + ": " + message + "\n");
         } catch (IOException e) {
             printLogging(this.getClass().getName(), e.getMessage());
         }
