@@ -13,12 +13,13 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.logging.Logger;
 
 public class CsvService {
-    private static final Logger LOGGER = Logger.getLogger(SchedulerService.class.getName());
+
+    private final ExceptionService exceptionService;
 
     public CsvService() {
+        exceptionService = new ExceptionService();
     }
 
     public void exportAsFile(List<SchedulerModel> schedulerModelList) {
@@ -54,7 +55,7 @@ public class CsvService {
             System.out.print("] 100%");
             csvPrinter.flush();
         } catch (IOException e) {
-            LOGGER.severe("Exception while trying to export as csv file. " + e.getMessage());
+            exceptionService.logging(this.getClass().getName(), e.getMessage());
         }
     }
 }

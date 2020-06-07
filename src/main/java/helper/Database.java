@@ -1,14 +1,13 @@
 package helper;
 
+import services.ExceptionService;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
-import java.util.logging.Logger;
 
 public final class Database {
-    private static final Logger LOGGER = Logger.getLogger(Database.class.getName());
-
     public static Connection getConnection() {
         Properties properties = PropertiesLoader.loadProperties("database.properties");
 
@@ -21,7 +20,8 @@ public final class Database {
         try {
             return DriverManager.getConnection(url + database + parameters, user, password);
         } catch (SQLException e) {
-            LOGGER.severe("Exception while trying to connect to the database. " + e.getMessage());
+            ExceptionService exceptionService = new ExceptionService();
+            exceptionService.logging("Database", e.getMessage());
         }
 
         return null;

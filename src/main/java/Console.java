@@ -1,3 +1,4 @@
+import services.ExceptionService;
 import services.SchedulerService;
 
 import java.io.BufferedReader;
@@ -7,20 +8,19 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.logging.Logger;
 
 /**
  * @author markus schnittker
  */
 public class Console {
-    private static final Logger LOGGER = Logger.getLogger(Console.class.getName());
-
     private final ResourceBundle translations;
     private final SchedulerService schedulerService;
+    private final ExceptionService exceptionService;
 
     public Console() {
         translations = ResourceBundle.getBundle("i18n.Console", Locale.getDefault());
         schedulerService = new SchedulerService();
+        exceptionService = new ExceptionService();
     }
 
     public void createConsole() {
@@ -38,7 +38,7 @@ public class Console {
 
                 handleUserInput(userInput);
             }catch (IOException e) {
-                LOGGER.severe("Exception while trying parse user input. " + e.getMessage());
+                exceptionService.logging(this.getClass().getName(), e.getMessage());
             }
         }
     }
@@ -51,12 +51,12 @@ public class Console {
         List<String> argumentsList = Arrays.asList(userInput.split("\\s"));
 
         String projectName = "";
-        String period = "";
+        int period = 1;
         if(argumentsList.size() == 2) {
             projectName = argumentsList.get(1);
         } else if(argumentsList.size() == 3) {
             projectName = argumentsList.get(1);
-            period = argumentsList.get(2);
+            period = Integer.parseInt(argumentsList.get(2));
         }
 
         switch (argumentsList.get(0)) {

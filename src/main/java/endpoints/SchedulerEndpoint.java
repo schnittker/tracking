@@ -2,6 +2,7 @@ package endpoints;
 
 import helper.Database;
 import models.SchedulerModel;
+import services.ExceptionService;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -9,15 +10,14 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class SchedulerEndpoint {
-    private static final Logger LOGGER = Logger.getLogger(SchedulerEndpoint.class.getName());
-
     private final Connection connection;
+    private final ExceptionService exceptionService;
 
     public SchedulerEndpoint() {
         connection = Database.getConnection();
+        exceptionService = new ExceptionService();
     }
 
     public void insert(SchedulerModel schedulerModel) {
@@ -31,7 +31,7 @@ public class SchedulerEndpoint {
 
             connection.createStatement().executeUpdate(sql);
         } catch (SQLException | NullPointerException e) {
-            LOGGER.severe("Exception while trying to execute sql statement. " + e.getMessage());
+            exceptionService.logging(this.getClass().getName(), e.getMessage());
         }
     }
 

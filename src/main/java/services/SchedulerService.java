@@ -12,18 +12,17 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
-import java.util.logging.Logger;
+import java.util.concurrent.ExecutorService;
 
 /**
  * @author markus schnittker
  */
 @SuppressWarnings("all")
 public class SchedulerService {
-    private static final Logger LOGGER = Logger.getLogger(SchedulerService.class.getName());
-
     private final ResourceBundle translations;
     private final SchedulerEndpoint schedulerEndpoint;
     private final CsvService csvService;
+    private final ExceptionService exceptionService;
 
     private List<SchedulerThread> schedulerThreadList = new ArrayList<>();
 
@@ -31,6 +30,7 @@ public class SchedulerService {
         translations = ResourceBundle.getBundle("i18n.Messages", Locale.getDefault());
         schedulerEndpoint = new SchedulerEndpoint();
         csvService = new CsvService();
+        exceptionService = new ExceptionService();
     }
 
     public void start(String projectName) {
@@ -54,7 +54,7 @@ public class SchedulerService {
         try {
             schedulerThread.wait();
         } catch (InterruptedException e) {
-            LOGGER.severe("Exception while trying to pause a scheduler thread. " + e.getMessage());
+            exceptionService.logging(this.getClass().getName(), e.getMessage());
         }
     }
 
