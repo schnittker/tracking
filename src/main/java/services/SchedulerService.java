@@ -4,6 +4,7 @@ import endpoints.SchedulerEndpoint;
 import models.SchedulerModel;
 import org.apache.commons.lang3.StringUtils;
 import threads.SchedulerThread;
+import utils.TimeUtils;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -49,17 +50,27 @@ public class SchedulerService {
     }
 
     public void pause(String projectName) {
-
+        SchedulerThread schedulerThread = getSchedulerThreadByProjectName(projectName);
+        try {
+            schedulerThread.wait();
+        } catch (InterruptedException e) {
+            LOGGER.severe("Exception while trying to pause a scheduler thread. " + e.getMessage());
+        }
     }
 
     public void active() {
-
+        for(SchedulerThread schedulerThread : schedulerThreadList) {
+            System.out.println(TimeUtils.getFormattedTime(schedulerThread.getStartTime()) + ": " +
+                    schedulerThread.getProjectName());
+        }
     }
 
-    public void export(String projectName, String period) {
-        List<SchedulerModel> schedulerModelList = new ArrayList<>();
+    public void export(String projectName, int month) {
+        LocalDateTime startDateTime = TimeUtils.getFirstDateOfMonth(month);
+        LocalDateTime stopDateTime = TimeUtils.getLastDateOfMonth(month);
 
-        // todo: get from table
+        List<SchedulerModel> schedulerModelList = schedulerEndpoint.getByProjectNameAndDateRange(projectName,
+                startDateTime, stopDateTime);
 
         csvService.exportAsFile(schedulerModelList);
     }
