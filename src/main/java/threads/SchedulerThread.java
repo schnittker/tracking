@@ -1,3 +1,5 @@
+package threads;
+
 import java.time.LocalDateTime;
 
 public class SchedulerThread extends Thread{

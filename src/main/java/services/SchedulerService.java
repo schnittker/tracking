@@ -1,22 +1,15 @@
-import endpoints.SchedulerEndpoint;
-import helper.PropertiesLoader;
-import models.SchedulerModel;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVPrinter;
-import org.apache.commons.lang3.StringUtils;
-import utils.TimeUtils;
+package services;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import endpoints.SchedulerEndpoint;
+import models.SchedulerModel;
+import org.apache.commons.lang3.StringUtils;
+import threads.SchedulerThread;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
@@ -24,18 +17,18 @@ import java.util.logging.Logger;
  * @author markus schnittker
  */
 @SuppressWarnings("all")
-public class Scheduler {
+public class SchedulerService {
     private static final ResourceBundle MESSAGES = ResourceBundle.getBundle("i18n.Messages", Locale.getDefault());
-    private static final Logger LOGGER = Logger.getLogger(Scheduler.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(SchedulerService.class.getName());
 
-    private SchedulerEndpoint schedulerEndpoint;
-    private Properties properties;
+    private final SchedulerEndpoint schedulerEndpoint;
+    private final CsvService csvService;
 
     private List<SchedulerThread> schedulerThreadList = new ArrayList<>();
 
-    public Scheduler() {
+    public SchedulerService() {
         schedulerEndpoint = new SchedulerEndpoint();
-        properties = PropertiesLoader.loadProperties("application.properties");
+        csvService = new CsvService();
     }
 
     public void start(String projectName) {
@@ -67,43 +60,7 @@ public class Scheduler {
 
         // todo: get from table
 
-        exportAsCsvFile(schedulerModelList);
-    }
-
-    private void exportAsCsvFile(List<SchedulerModel> schedulerModelList) {
-        String csvOutputPath = properties.getProperty("csv_output_path");
-
-        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(csvOutputPath));
-             CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
-
-            int stepSize = schedulerThreadList.size() / 10;
-            System.out.print("[");
-
-            for(SchedulerModel schedulerModel : schedulerModelList) {
-                long curHours = TimeUtils.computeHours(schedulerModel.getStartTime(), schedulerModel.getStopTime());
-                String date = TimeUtils.getFormattedDate(schedulerModel.getStartTime());
-                String startTime = TimeUtils.getFormattedTime(schedulerModel.getStartTime());
-                String stopTime = TimeUtils.getFormattedTime(schedulerModel.getStopTime());
-
-                csvPrinter.printRecord(date, schedulerModel.getProjectName(), startTime, stopTime, curHours);
-
-                for(int progressIndex = 0; progressIndex <= stepSize; progressIndex++) {
-                    System.out.print("=");
-                }
-            }
-
-            csvPrinter.println();
-
-            Map<String, Long> projectsMap = TimeUtils.getTotalHoursAsProjectsMap(schedulerModelList);
-            for(Map.Entry projectEntry : projectsMap.entrySet()) {
-                csvPrinter.printRecord(projectEntry.getKey(), projectEntry.getValue());
-            }
-
-            System.out.print("] 100%");
-            csvPrinter.flush();
-        } catch (IOException e) {
-            LOGGER.severe("Exception while trying to export as csv file. " + e.getMessage());
-        }
+        csvService.exportAsFile(schedulerModelList);
     }
 
     private SchedulerThread getSchedulerThreadByProjectName(String projectName) {

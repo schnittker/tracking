@@ -1,6 +1,6 @@
 CREATE DATABASE tracking;
 
-CREATE TABLE tracking.scheduler (
+CREATE TABLE tracking.schedulerService (
    id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
    project_name VARCHAR(255) NOT NULL,
    start_time TIMESTAMP NOT NULL,

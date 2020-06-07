@@ -1,3 +1,5 @@
+import services.SchedulerService;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,8 +16,13 @@ public class Console {
     private static final ResourceBundle MESSAGES = ResourceBundle.getBundle("i18n.Messages", Locale.getDefault());
     private static final Logger LOGGER = Logger.getLogger(Console.class.getName());
 
+    private final SchedulerService schedulerService;
+
+    public Console() {
+        schedulerService = new SchedulerService();
+    }
+
     public void createConsole() {
-        Scheduler scheduler = new Scheduler();
 
         System.out.println("tracking 0.1 - type help to display all commands");
 
@@ -28,14 +35,14 @@ public class Console {
                     System.exit(0);
                 }
 
-                handleUserInput(scheduler, userInput);
+                handleUserInput(userInput);
             }catch (IOException e) {
                 LOGGER.severe("Exception while trying parse user input. " + e.getMessage());
             }
         }
     }
 
-    private static void handleUserInput(Scheduler scheduler, String userInput) {
+    private void handleUserInput(String userInput) {
         if(userInput.isEmpty()) {
             return;
         }
@@ -53,13 +60,13 @@ public class Console {
 
         switch (argumentsList.get(0)) {
             case "start":
-                scheduler.start(projectName);
+                schedulerService.start(projectName);
                 break;
             case "stop":
-                scheduler.stop(projectName);
+                schedulerService.stop(projectName);
                 break;
             case "export":
-                scheduler.export(projectName, period);
+                schedulerService.export(projectName, period);
             default:
                 System.out.println(MESSAGES.getString("invalid_user_input"));
                 break;
