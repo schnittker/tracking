@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
-import java.util.concurrent.ExecutorService;
 
 /**
  * @author markus schnittker
@@ -46,6 +45,7 @@ public class SchedulerService {
         if(Objects.nonNull(schedulerThread) && Objects.nonNull(schedulerModel)) {
             schedulerEndpoint.insert(schedulerModel);
             schedulerThread.interrupt();
+            System.out.println(translations.getString("stop_tracking") + " \"" + projectName + "\"");
         }
     }
 
@@ -69,8 +69,12 @@ public class SchedulerService {
         LocalDateTime startDateTime = TimeUtils.getFirstDateOfMonth(month);
         LocalDateTime stopDateTime = TimeUtils.getLastDateOfMonth(month);
 
-        List<SchedulerModel> schedulerModelList = schedulerEndpoint.getByProjectNameAndDateRange(projectName,
-                startDateTime, stopDateTime);
+        List<SchedulerModel> schedulerModelList;
+        if(StringUtils.equals(projectName, "all")) {
+            schedulerModelList = schedulerEndpoint.getByDateRange(startDateTime, stopDateTime);
+        } else {
+            schedulerModelList = schedulerEndpoint.getByProjectNameAndDateRange(projectName, startDateTime, stopDateTime);
+        }
 
         csvService.exportAsFile(schedulerModelList);
     }

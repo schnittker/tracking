@@ -66,11 +66,30 @@ public class Console {
             case "stop":
                 schedulerService.stop(projectName);
                 break;
+            case "pause":
+                schedulerService.pause(projectName);
+                break;
+            case "active":
+                schedulerService.active();
+                break;
             case "export":
                 schedulerService.export(projectName, period);
+                break;
+            case "help":
+                help();
+                break;
             default:
                 System.out.println(translations.getString("invalid_user_input"));
                 break;
         }
+    }
+
+    private void help() {
+        System.out.println("start [project_name] - " + translations.getString("help_start"));
+        System.out.println("stop [project_name] - " + translations.getString("help_stop"));
+        System.out.println("pause [project_name] - " + translations.getString("help_pause"));
+        System.out.println("active - " + translations.getString("help_active"));
+        System.out.println("export [project_name | all] [month] - " + translations.getString("help_export"));
+        System.out.println("exit - " + translations.getString("help_exit"));
     }
 }

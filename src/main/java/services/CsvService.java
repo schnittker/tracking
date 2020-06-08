@@ -11,14 +11,18 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
+import java.util.ResourceBundle;
 
 public class CsvService {
 
+    private final ResourceBundle translations;
     private final ExceptionService exceptionService;
 
     public CsvService() {
+        translations = ResourceBundle.getBundle("i18n.Messages", Locale.getDefault());
         exceptionService = new ExceptionService();
     }
 
@@ -27,7 +31,10 @@ public class CsvService {
         String csvOutputPath = properties.getProperty("csv_output_path");
 
         try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(csvOutputPath));
-             CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
+             CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader(
+                     translations.getString("csv_header_date"), translations.getString("csv_header_project_name"),
+                     translations.getString("csv_header_start_time"), translations.getString("csv_header_stop_time"),
+                     translations.getString("csv_header_hours")))) {
 
             int stepSize = schedulerModelList.size() / 10;
             System.out.print("[");
@@ -52,7 +59,7 @@ public class CsvService {
                 csvPrinter.printRecord(projectEntry.getKey(), projectEntry.getValue());
             }
 
-            System.out.print("] 100%");
+            System.out.print("] 100%\n");
             csvPrinter.flush();
         } catch (IOException e) {
             exceptionService.logging(this.getClass().getName(), e.getMessage());
