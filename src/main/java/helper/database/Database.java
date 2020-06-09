@@ -1,5 +1,6 @@
-package helper;
+package helper.database;
 
+import helper.PropertiesLoader;
 import services.ExceptionService;
 
 import java.sql.Connection;

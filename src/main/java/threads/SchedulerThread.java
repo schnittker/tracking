@@ -1,11 +1,12 @@
 package threads;
 
-import utils.TimeUtils;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+@Getter
 public class SchedulerThread extends Thread{
     private final ResourceBundle translations;
 
@@ -20,13 +21,5 @@ public class SchedulerThread extends Thread{
 
     public void run() {
         System.out.println(translations.getString("start_tracking") + " \"" + projectName + "\"");
-    }
-
-    public String getProjectName() {
-        return projectName;
-    }
-
-    public LocalDateTime getStartTime() {
-        return startTime;
     }
 }

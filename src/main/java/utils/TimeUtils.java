@@ -44,7 +44,7 @@ public class TimeUtils {
     }
 
     public static Map<String, Long> getTotalHoursAsProjectsMap(List<SchedulerModel> schedulerModelList) {
-        Map<String, Long> projectsMap = new HashMap<>();
+        Map<String, Long> projectsMap = new HashMap<String, Long>();
 
         for(SchedulerModel schedulerModel : schedulerModelList) {
             long currentHours = computeHours(schedulerModel.getStartTime(), schedulerModel.getStopTime());

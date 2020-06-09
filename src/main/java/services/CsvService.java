@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -28,7 +29,7 @@ public class CsvService {
 
     public void exportAsFile(List<SchedulerModel> schedulerModelList) {
         Properties properties = PropertiesLoader.loadProperties("application.properties");
-        String csvOutputPath = properties.getProperty("csv_output_path");
+        String csvOutputPath = Objects.requireNonNull(properties).getProperty("csv_output_path");
 
         try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(csvOutputPath));
              CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader(
@@ -45,7 +46,7 @@ public class CsvService {
                 String startTime = TimeUtils.getFormattedTime(schedulerModel.getStartTime());
                 String stopTime = TimeUtils.getFormattedTime(schedulerModel.getStopTime());
 
-                csvPrinter.printRecord(date, schedulerModel.getProjectName(), startTime, stopTime, curHours);
+                csvPrinter.printRecord(date, schedulerModel.getProjectName(), startTime, stopTime, Long.valueOf(curHours));
 
                 for(int progressIndex = 0; progressIndex <= stepSize; progressIndex++) {
                     System.out.print("=");

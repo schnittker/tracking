@@ -1,6 +1,6 @@
 package endpoints;
 
-import helper.Database;
+import helper.database.Database;
 import helper.database.QueryBuilder;
 import models.SchedulerModel;
 import services.ExceptionService;
