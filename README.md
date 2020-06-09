@@ -15,7 +15,7 @@ java -jar ./build/lib/tracking.jar
 The product directory contains a docker-compose.yml.
 If you call it with 
 ```shell
-Docker-compose up
+docker-compose up
 ```
 you can start your own docker container for mysql. 
 the container automatically includes /resources/sql/create.sql, and creates the database and tables. 
@@ -44,7 +44,7 @@ Ends the tracker
 
 ### GUI
 If you start the program with 
-``shell
+```shell
 java -jar ./build/lib/tracking.jar -g
 ```
 Or`
