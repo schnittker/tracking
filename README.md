@@ -3,7 +3,7 @@ If you have a question, just write to
 schnittker@neozo.de
 
 ## Description
-Tracking is a small console application to track the time you are working on a project. 
+Tracking is a small multi lingual console application to track the time you are working on a project. 
 
 ## How to install
 ```bash
@@ -49,7 +49,7 @@ Ends the tracker
 
 ### GUI
 If you start the program with 
-```shell
+``shell
 java -jar ./build/lib/tracking.jar -g
 ```
 Or`
@@ -85,6 +85,12 @@ new QueryBuilder().insert().table("scheduler")
                     .columns(Arrays.asList("project_name", "start_time", "stop_time"))
                     .values(Arrays.asList("?", "?", "?")).toSql();
 ```
+
+## Multi lingual
+You can add new translations to the folder :
+./resources/i18n
+
+Currently the program is completely translated into english and german. 
 
 ## Other stuff
 ### Frameworks and other technologies
