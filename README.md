@@ -49,7 +49,7 @@ Ends the tracker
 
 ### GUI
 If you start the program with 
-``shell
+```shell
 java -jar ./build/lib/tracking.jar -g
 ```
 Or`
