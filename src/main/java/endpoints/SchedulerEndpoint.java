@@ -1,6 +1,7 @@
 package endpoints;
 
 import helper.Database;
+import helper.database.QueryBuilder;
 import models.SchedulerModel;
 import services.ExceptionService;
 
@@ -45,7 +46,10 @@ public class SchedulerEndpoint {
         List<SchedulerModel> schedulerModelList = new ArrayList<>();
 
         try {
-            String sql = "SELECT * FROM scheduler WHERE start_time >= ? AND stop_time <= ? ORDER BY id";
+            // SELECT * FROM scheduler WHERE start_time >= ? AND stop_time <= ? ORDER BY id
+            String sql = new QueryBuilder().select().all().from("scheduler").where()
+                    .column("start_time").gt().eq().column("?").and()
+                    .column("stop_time").lt().eq().column("?").orderBy("id").toSql();
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setTimestamp(1, Timestamp.valueOf(from));
@@ -72,7 +76,12 @@ public class SchedulerEndpoint {
         List<SchedulerModel> schedulerModelList = new ArrayList<>();
 
         try {
-            String sql = "SELECT * FROM scheduler WHERE project_name = ? AND start_time >= ? AND stop_time <= ? ORDER BY id";
+            // SELECT * FROM scheduler WHERE project_name = ? AND start_time >= ? AND stop_time <= ? ORDER BY id"
+            String sql = new QueryBuilder().select().all().from("scheduler").where()
+                    .column("project_name").eq().column("?").and()
+                    .column("start_time").gt().eq().column("?").and()
+                    .column("stop_time").lt().eq().column("?")
+                    .orderBy("id").toSql();
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, projectName);
