@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SchedulerEndpoint {
@@ -29,7 +30,10 @@ public class SchedulerEndpoint {
 
     public void insert(String projectName, LocalDateTime startTime, LocalDateTime stopTime) {
         try {
-            String sql = "INSERT INTO scheduler (project_name, start_time, stop_time) VALUES(?,?,?)";
+            // INSERT INTO scheduler (project_name, start_time, stop_time) VALUES(?,?,?)
+            String sql = new QueryBuilder().insert().table("scheduler")
+                    .columns(Arrays.asList("project_name", "start_time", "stop_time"))
+                    .values(Arrays.asList("?", "?", "?")).toSql();
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, projectName);

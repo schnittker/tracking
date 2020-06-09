@@ -11,7 +11,7 @@ public class QueryBuilder {
         return this;
     }
 
-    public QueryBuilder select(String ...columns) {
+    public QueryBuilder select(List<String> columns) {
         queryList.add("SELECT " + String.join(", ", columns));
         return this;
     }
@@ -26,8 +26,8 @@ public class QueryBuilder {
         return this;
     }
 
-    public QueryBuilder values(String ...values) {
-        queryList.add("(" + String.join(",", values));
+    public QueryBuilder values(List<String> values) {
+        queryList.add(" VALUES(" + String.join(",", values) + ")");
         return this;
     }
 
@@ -51,6 +51,11 @@ public class QueryBuilder {
         return this;
     }
 
+    public QueryBuilder columns(List<String> columns) {
+        queryList.add("(" + String.join(",", columns) + ")");
+        return this;
+    }
+
     public QueryBuilder lt() {
         queryList.add("<");
         return this;
@@ -68,6 +73,11 @@ public class QueryBuilder {
 
     public QueryBuilder and() {
         queryList.add(" AND ");
+        return this;
+    }
+
+    public QueryBuilder or() {
+        queryList.add(" OR ");
         return this;
     }
 
