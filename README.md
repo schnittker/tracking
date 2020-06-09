@@ -35,6 +35,11 @@ List all active time trackers.
 Exports all data of the specified projects for the selected month as cdv file and calculates the total number of hours for each project.
 The export file can be found in the project folder under ./export.csv
 
+application.yml :
+```yaml
+csv_output_path=./export.csv
+```
+
 ### export all [number_of_month]
 Exports all data of all projects for the selected month as cdv file and calculates the total number of hours for each project.
 The export file can be found in the project folder under ./export.csv
@@ -61,6 +66,11 @@ The errors are output directly to the console in "debug_mode".
 If the "debug_mode" is off, then they are written to a log file. 
 You can find the log file under ./log/errors.txt
 You can set the "debug_mode" in the application.yml to true or false.
+
+```yaml
+debug_file_path=./logs/errors.txt
+debug_mode=false
+```
 
 ## SQL query builder
 There is its own little query builder.
