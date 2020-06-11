@@ -9,6 +9,9 @@ import java.awt.*;
 import java.time.LocalDateTime;
 import java.time.Month;
 
+/**
+ * @author markus schnittker
+ */
 public class TableView {
     private final SchedulerEndpoint schedulerEndpoint;
 

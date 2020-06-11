@@ -17,6 +17,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * @author markus schnittker
+ */
 public class SchedulerEndpoint {
     private final Connection connection;
     private final ExceptionService exceptionService;

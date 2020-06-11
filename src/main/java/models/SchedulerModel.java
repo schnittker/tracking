@@ -2,6 +2,9 @@ package main.java.models;
 
 import java.time.LocalDateTime;
 
+/**
+ * @author markus schnittker
+ */
 public class SchedulerModel {
     private int id;
     private Integer projectsId;

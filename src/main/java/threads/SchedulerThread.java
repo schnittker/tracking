@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * @author markus schnittker
+ */
 public class SchedulerThread extends Thread{
     private final ResourceBundle translations;
 

@@ -2,6 +2,9 @@ package main.java.components;
 
 import javax.swing.*;
 
+/**
+ * @author markus schnittker
+ */
 public class StatusBar {
     private JPanel statusPanel;
     private static JLabel lblStatus;

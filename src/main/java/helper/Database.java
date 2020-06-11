@@ -7,6 +7,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+/**
+ * @author markus schnittker
+ */
 public final class Database {
     public static Connection getConnection() {
         try {

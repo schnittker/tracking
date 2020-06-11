@@ -10,6 +10,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
+/**
+ * @author markus schnittker
+ */
 public class ProjectList {
     private final ProjectsEndpoint projectsEndpoint;
 
@@ -30,7 +33,7 @@ public class ProjectList {
             public void mouseClicked(MouseEvent mouseEvent) {
                 TreePath treePath = projectTree.getPathForLocation(mouseEvent.getX(), mouseEvent.getY());
                 if (treePath != null) {
-                    selectedProject = Integer.valueOf(projectTree.getRowForPath(treePath));
+                    selectedProject = projectTree.getRowForPath(treePath);
 
                     TrackingApplication.tableView.getTableByProjectsId(selectedProject);
                 }

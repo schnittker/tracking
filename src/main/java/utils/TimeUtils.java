@@ -8,6 +8,9 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
 
+/**
+ * @author markus schnittker
+ */
 public class TimeUtils {
     public static String getFormattedDate(LocalDateTime dateTime) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
@@ -55,5 +58,15 @@ public class TimeUtils {
         LocalDate firstDateOfMonth = LocalDate.of(getCurrentYear(), Month.of(month), 1);
         LocalDate lastDateOfMonth = firstDateOfMonth.with(TemporalAdjusters.lastDayOfMonth());
         return LocalDateTime.of(lastDateOfMonth, localTime);
+    }
+
+    public static String getWorkingTimeAsString(long totalMinutes) {
+        long hours = totalMinutes / 60;
+        String minutes = String.valueOf(totalMinutes - (hours * 60));
+        if(minutes.length() == 1) {
+            minutes = 0 + minutes;
+        }
+
+        return hours + ":" + minutes;
     }
 }

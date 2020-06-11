@@ -12,6 +12,9 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+/**
+ * @author markus schnittker
+ */
 public class ToolBar {
     private final SchedulerService schedulerService;
     private final ResourceBundle translations;

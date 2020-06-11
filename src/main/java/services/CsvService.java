@@ -2,14 +2,15 @@ package main.java.services;
 
 import main.java.helper.PropertiesLoader;
 import main.java.models.SchedulerModel;
+import main.java.utils.TimeUtils;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
-import main.java.utils.TimeUtils;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -19,6 +20,10 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 
 import static main.java.utils.TimeUtils.computeHours;
+
+/**
+ * @author markus schnittker
+ */
 
 public class CsvService {
 
@@ -35,46 +40,57 @@ public class CsvService {
         String csvOutputPath = Objects.requireNonNull(properties).getProperty("csv_output_path");
 
         try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(csvOutputPath));
-             CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader(
-                     translations.getString("header_date"), translations.getString("header_project_name"),
-                     translations.getString("header_start_time"), translations.getString("header_stop_time"),
-                     translations.getString("header_hours")))) {
+             CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
 
-            for(SchedulerModel schedulerModel : schedulerModelList) {
-                String curHours = computeHours(schedulerModel.getStartTime(), schedulerModel.getStopTime()) + ":" + TimeUtils.computeMinutes(schedulerModel.getStartTime(), schedulerModel.getStopTime());
-                String date = TimeUtils.getFormattedDate(schedulerModel.getStartTime());
-                String startTime = TimeUtils.getFormattedTime(schedulerModel.getStartTime());
-                String stopTime = TimeUtils.getFormattedTime(schedulerModel.getStopTime());
-
-                csvPrinter.printRecord(date, schedulerModel.getProjectName(), startTime, stopTime, curHours);
-            }
-
-            csvPrinter.println();
-
-            Map<String, Long> projectsMap = getTotalHoursAsProjectsMap(schedulerModelList);
-            for(Map.Entry projectEntry : projectsMap.entrySet()) {
-                csvPrinter.printRecord(projectEntry.getKey(), projectEntry.getValue());
-            }
-
+            writerHeader(csvPrinter);
+            writeContent(schedulerModelList, csvPrinter);
+            writeFooter(schedulerModelList, csvPrinter);
             csvPrinter.flush();
         } catch (IOException e) {
             exceptionService.logging(this.getClass().getName(), e.getMessage());
         }
     }
 
-    private Map<String, Long> getTotalHoursAsProjectsMap(List<SchedulerModel> schedulerModelList) {
+    private void writerHeader(CSVPrinter csvPrinter) throws IOException {
+        csvPrinter.printRecord(
+                translations.getString("header_date"), translations.getString("header_project_name"),
+                translations.getString("header_start_time"), translations.getString("header_stop_time"),
+                translations.getString("header_hours"));
+    }
+
+    private void writeContent(List<SchedulerModel> schedulerModelList, CSVPrinter csvPrinter) throws IOException {
+        for(SchedulerModel schedulerModel : schedulerModelList) {
+            String curHours = computeHours(schedulerModel.getStartTime(), schedulerModel.getStopTime()) + ":" + TimeUtils.computeMinutes(schedulerModel.getStartTime(), schedulerModel.getStopTime());
+            String date = TimeUtils.getFormattedDate(schedulerModel.getStartTime());
+            String startTime = TimeUtils.getFormattedTime(schedulerModel.getStartTime());
+            String stopTime = TimeUtils.getFormattedTime(schedulerModel.getStopTime());
+
+            csvPrinter.printRecord(date, schedulerModel.getProjectName(), startTime, stopTime, curHours);
+        }
+    }
+
+    private void writeFooter(List<SchedulerModel> schedulerModelList, CSVPrinter csvPrinter) throws IOException {
+        Map<String, Long> projectsMap = getTotalMinutesByProjectAsMap(schedulerModelList);
+        csvPrinter.println();
+        for(Map.Entry<String, Long> projectEntry : projectsMap.entrySet()) {
+            String totalTime = TimeUtils.getWorkingTimeAsString(projectEntry.getValue());
+            csvPrinter.printRecord(projectEntry.getKey(), totalTime);
+        }
+    }
+
+    private Map<String, Long> getTotalMinutesByProjectAsMap(List<SchedulerModel> schedulerModelList) {
         Map<String, Long> projectsMap = new HashMap<String, Long>();
 
         for(SchedulerModel schedulerModel : schedulerModelList) {
-            long currentHours = computeHours(schedulerModel.getStartTime(), schedulerModel.getStopTime());
+            long currentMinutes = ChronoUnit.MINUTES.between(schedulerModel.getStartTime(), schedulerModel.getStopTime());
             String projectName = schedulerModel.getProjectName();
 
             if(projectsMap.containsKey(projectName)) {
-                Long totalProjectHours = projectsMap.get(projectName);
-                totalProjectHours = totalProjectHours.longValue() + currentHours;
-                projectsMap.put(projectName, totalProjectHours.longValue());
+                Long totalProjectMinutes = projectsMap.get(projectName);
+                totalProjectMinutes = totalProjectMinutes.longValue() + currentMinutes;
+                projectsMap.put(projectName, totalProjectMinutes);
             } else {
-                projectsMap.put(projectName, currentHours);
+                projectsMap.put(projectName, currentMinutes);
             }
         }
 

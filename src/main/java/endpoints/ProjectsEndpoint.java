@@ -10,6 +10,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author markus schnittker
+ */
 public class ProjectsEndpoint {
     private final Connection connection;
     private final ExceptionService exceptionService;

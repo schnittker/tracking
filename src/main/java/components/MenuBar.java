@@ -5,6 +5,9 @@ import java.awt.event.ActionEvent;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * @author markus schnittker
+ */
 public class MenuBar {
     private final ResourceBundle translation;
 

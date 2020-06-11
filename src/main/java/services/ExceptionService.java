@@ -10,6 +10,9 @@ import java.io.PrintWriter;
 import java.util.Properties;
 import java.util.logging.Logger;
 
+/**
+ * @author markus schnittker
+ */
 public class ExceptionService {
 
     private final Properties properties;
