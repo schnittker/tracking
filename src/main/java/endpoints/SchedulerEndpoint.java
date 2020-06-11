@@ -12,14 +12,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class SchedulerEndpoint {
     private final Connection connection;
     private final ExceptionService exceptionService;
+    private final ResourceBundle translations;
 
     public SchedulerEndpoint() {
         connection = Database.getConnection();
         exceptionService = new ExceptionService();
+        translations = ResourceBundle.getBundle("i18n.Messages", Locale.getDefault());
     }
 
     public void insert(SchedulerModel schedulerModel) {
@@ -42,7 +46,9 @@ public class SchedulerEndpoint {
     }
 
     public DefaultTableModel getByDateRange(LocalDateTime from, LocalDateTime to) {
-        String[] headline = {"Projektname", "Datum", "Startzeit", "Endzeit", "Stunden"};
+        String[] headline = {translations.getString("csv_header_project_name"), translations.getString("csv_header_date"),
+                translations.getString("csv_header_start_time"), translations.getString("csv_header_stop_time"),
+                translations.getString("csv_header_hours")};
         DefaultTableModel defaultTableModel = new DefaultTableModel(headline, 0);
 
         try {
@@ -78,7 +84,9 @@ public class SchedulerEndpoint {
     }
 
     public DefaultTableModel getByProjectsIdAndDateRange(int projectsId, LocalDateTime from, LocalDateTime to) {
-        String[] headline = {"Projektname", "Startzeit", "Endzeit"};
+        String[] headline = {translations.getString("csv_header_project_name"), translations.getString("csv_header_date"),
+                translations.getString("csv_header_start_time"), translations.getString("csv_header_stop_time"),
+                translations.getString("csv_header_hours")};
         DefaultTableModel defaultTableModel = new DefaultTableModel(headline, 0);
 
         try {

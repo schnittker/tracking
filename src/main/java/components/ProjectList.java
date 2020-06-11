@@ -1,5 +1,6 @@
 package main.java.components;
 
+import main.java.TrackingApplication;
 import main.java.endpoints.ProjectsEndpoint;
 
 import javax.swing.*;
@@ -30,6 +31,8 @@ public class ProjectList {
                 TreePath treePath = projectTree.getPathForLocation(mouseEvent.getX(), mouseEvent.getY());
                 if (treePath != null) {
                     selectedProject = Integer.valueOf(projectTree.getRowForPath(treePath));
+
+                    TrackingApplication.tableView.getTableByProjectsId(selectedProject);
                 }
             }
         });

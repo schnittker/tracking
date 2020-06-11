@@ -54,6 +54,7 @@ public class ToolBar {
                 if(Objects.nonNull(projectsId)) {
                     schedulerService.stop(projectsId.intValue());
                     TrackingApplication.statusBar.setMessage(translations.getString("stop_tracking"));
+                    TrackingApplication.tableView.getRefreshedDefaults();
                 } else {
                     TrackingApplication.statusBar.setMessage(translations.getString("no_selected_project"));
                 }
