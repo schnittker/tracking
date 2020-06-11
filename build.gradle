@@ -30,8 +30,13 @@ jar {
 }
 
 task buildJar(type: Jar) {
-    //sourceSets.main.resources.includes = [ "i18n/**/*.properties" ]
-    //sourceSets.main.resources.includes = [ "*.properties" ]
+    sourceSets {
+        main {
+            resources {
+                srcDirs "src/main/resources"
+            }
+        }
+    }
 
     manifest {
         attributes 'Main-Class': 'TrackingApplication'
