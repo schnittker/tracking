@@ -13,7 +13,7 @@ import java.util.Properties;
 public final class Database {
     public static Connection getConnection() {
         try {
-            Properties properties = PropertiesLoader.loadProperties("database.properties");
+            Properties properties = new PropertiesLoader().loadProperties("database.properties");
             String url = properties.getProperty("url");
             String database = properties.getProperty("database");
             String parameters = properties.getProperty("parameters");

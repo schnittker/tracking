@@ -18,7 +18,7 @@ public class ExceptionService {
     private final Properties properties;
 
     public ExceptionService() {
-        properties = PropertiesLoader.loadProperties("application.properties");
+        properties = new PropertiesLoader().loadProperties("application.properties");
     }
 
     public void logging(String className, String message) {

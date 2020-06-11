@@ -36,7 +36,7 @@ public class CsvService {
     }
 
     public void exportAsFile(List<SchedulerModel> schedulerModelList) {
-        Properties properties = PropertiesLoader.loadProperties("application.properties");
+        Properties properties = new PropertiesLoader().loadProperties("application.properties");
         String csvOutputPath = Objects.requireNonNull(properties).getProperty("csv_output_path");
 
         try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(csvOutputPath));

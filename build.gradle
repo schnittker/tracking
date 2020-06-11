@@ -39,7 +39,7 @@ task buildJar(type: Jar) {
     }
 
     manifest {
-        attributes 'Main-Class': 'TrackingApplication'
+        attributes 'Main-Class': 'main.java.TrackingApplication'
     }
     baseName = 'tracking'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
