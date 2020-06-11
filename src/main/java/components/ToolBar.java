@@ -75,6 +75,7 @@ public class ToolBar {
             public void actionPerformed(ActionEvent e) {
                 Month currentMonth = TimeUtils.getCurrentMonth();
                 schedulerService.export(currentMonth.getValue());
+                TrackingApplication.statusBar.setMessage(translations.getString("export_data"));
             }
         });
 

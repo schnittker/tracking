@@ -11,7 +11,7 @@ public class StatusBar {
 
     public JPanel createStatusBar() {
         statusPanel = new JPanel();
-        lblStatus = new JLabel("test");
+        lblStatus = new JLabel();
 
         statusPanel.add(lblStatus);
         return statusPanel;
