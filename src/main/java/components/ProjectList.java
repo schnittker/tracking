@@ -9,12 +9,15 @@ import javax.swing.tree.TreePath;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  * @author markus schnittker
  */
 public class ProjectList {
     private final ProjectsEndpoint projectsEndpoint;
+    private final ResourceBundle translations;
 
     private JTree projectTree;
 
@@ -22,6 +25,7 @@ public class ProjectList {
 
     public ProjectList() {
         projectsEndpoint = new ProjectsEndpoint();
+        translations = ResourceBundle.getBundle("i18n.Messages", Locale.getDefault());
     }
 
     public JTree createTree() {
@@ -34,8 +38,9 @@ public class ProjectList {
                 TreePath treePath = projectTree.getPathForLocation(mouseEvent.getX(), mouseEvent.getY());
                 if (treePath != null) {
                     selectedProject = projectTree.getRowForPath(treePath);
-
                     TrackingApplication.tableView.getTableByProjectsId(selectedProject);
+                } else {
+                    TrackingApplication.tableView.getRefreshedDefaults();
                 }
             }
         });
@@ -48,7 +53,7 @@ public class ProjectList {
     }
 
     private DefaultMutableTreeNode processHierarchy(List<String> projectList) {
-        DefaultMutableTreeNode node = new DefaultMutableTreeNode();
+        DefaultMutableTreeNode node = new DefaultMutableTreeNode(translations.getString("projects"));
         DefaultMutableTreeNode child;
 
         for (String projectName : projectList) {
