@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 public class SchedulerModel {
     private int id;
     private Integer projectsId;
+    private String projectName;
     private LocalDateTime startTime;
     private LocalDateTime stopTime;
 
@@ -22,6 +23,14 @@ public class SchedulerModel {
 
     public void setProjectsId(Integer projectsId) {
         this.projectsId = projectsId;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 
     public LocalDateTime getStartTime() {

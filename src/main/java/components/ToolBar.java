@@ -2,10 +2,12 @@ package main.java.components;
 
 import main.java.TrackingApplication;
 import main.java.services.SchedulerService;
+import main.java.utils.TimeUtils;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.Month;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -16,11 +18,13 @@ public class ToolBar {
 
     private JToolBar toolBar;
     private JButton btnTrackerStart;
-    private Icon iconTrackerStart;
+    private ImageIcon iconTrackerStart;
     private JButton btnTrackerStop;
-    private Icon iconTrackerStop;
+    private ImageIcon iconTrackerStop;
+    private JButton btnExport;
+    private ImageIcon iconExport;
     private JButton btnExit;
-    private Icon iconExit;
+    private ImageIcon iconExit;
 
     public ToolBar() {
         schedulerService = new SchedulerService();
@@ -30,8 +34,8 @@ public class ToolBar {
     public JToolBar createToolbar() {
         toolBar = new JToolBar();
 
-        iconTrackerStart = new ImageIcon("");
-        btnTrackerStart = new JButton("start");
+        iconTrackerStart = new ImageIcon(getClass().getResource("/icons/play.png"));
+        btnTrackerStart = new JButton(iconTrackerStart);
         btnTrackerStart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -45,8 +49,8 @@ public class ToolBar {
             }
         });
 
-        iconTrackerStop = new ImageIcon("");
-        btnTrackerStop = new JButton("stop");
+        iconTrackerStop = new ImageIcon(getClass().getResource("/icons/stop.png"));
+        btnTrackerStop = new JButton(iconTrackerStop);
         btnTrackerStop.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -61,8 +65,18 @@ public class ToolBar {
             }
         });
 
-        iconExit = new ImageIcon("");
-        btnExit = new JButton("exit");
+        iconExport = new ImageIcon(getClass().getResource("/icons/export.png"));
+        btnExport = new JButton(iconExport);
+        btnExport.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Month currentMonth = TimeUtils.getCurrentMonth();
+                schedulerService.export(currentMonth.getValue());
+            }
+        });
+
+        iconExit = new ImageIcon(getClass().getResource("/icons/logout.png"));
+        btnExit = new JButton(iconExit);
         btnExit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -73,6 +87,8 @@ public class ToolBar {
         toolBar.addSeparator();
         toolBar.add(btnTrackerStart);
         toolBar.add(btnTrackerStop);
+        toolBar.addSeparator();
+        toolBar.add(btnExport);
         toolBar.addSeparator();
         toolBar.add(btnExit);
 

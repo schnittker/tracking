@@ -47,17 +47,11 @@ public class SchedulerService {
         }
     }
 
-    public void active() {
-        for(SchedulerThread schedulerThread : schedulerThreadList) {
-            // TODO: 11.06.20 implement
-        }
-    }
-
-    public void export(String projectName, int month) {
+    public void export(int month) {
         LocalDateTime startDateTime = TimeUtils.getFirstDateOfMonth(month);
         LocalDateTime stopDateTime = TimeUtils.getLastDateOfMonth(month);
-
-        // todo: implements export
+        List<SchedulerModel> schedulerModelList = schedulerEndpoint.getByDateRangeForExport(startDateTime, stopDateTime);
+        csvService.exportAsFile(schedulerModelList);
     }
 
     private SchedulerThread getSchedulerThreadByProjectsId(int projectsId) {

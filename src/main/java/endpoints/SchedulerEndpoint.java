@@ -12,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -43,6 +45,34 @@ public class SchedulerEndpoint {
         } catch (SQLException e) {
             exceptionService.logging(this.getClass().getName(), e.getMessage());
         }
+    }
+
+    public List<SchedulerModel> getByDateRangeForExport(LocalDateTime from, LocalDateTime to) {
+        List<SchedulerModel> schedulerModelList = new ArrayList<>();
+
+        try {
+            String sql = "SELECT * FROM scheduler INNER JOIN projects ON scheduler.projects_id = projects.id " +
+                    "WHERE scheduler.start_time >= ? AND scheduler.stop_time <= ? ORDER BY scheduler.id";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setTimestamp(1, Timestamp.valueOf(from));
+            preparedStatement.setTimestamp(2, Timestamp.valueOf(to));
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()) {
+                SchedulerModel schedulerModel = new SchedulerModel();
+                schedulerModel.setProjectName(resultSet.getString("project_name"));
+                schedulerModel.setStartTime(resultSet.getTimestamp("start_time").toLocalDateTime());
+                schedulerModel.setStopTime(resultSet.getTimestamp("stop_time").toLocalDateTime());
+
+                schedulerModelList.add(schedulerModel);
+            }
+
+        } catch (SQLException e) {
+            exceptionService.logging(this.getClass().getName(), e.getMessage());
+        }
+
+        return schedulerModelList;
     }
 
     public DefaultTableModel getByDateRange(LocalDateTime from, LocalDateTime to) {
