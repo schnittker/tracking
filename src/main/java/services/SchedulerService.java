@@ -1,10 +1,9 @@
-package services;
+package main.java.services;
 
-import endpoints.SchedulerEndpoint;
-import models.SchedulerModel;
-import org.apache.commons.lang3.StringUtils;
-import threads.SchedulerThread;
-import utils.TimeUtils;
+import main.java.endpoints.SchedulerEndpoint;
+import main.java.models.SchedulerModel;
+import main.java.threads.SchedulerThread;
+import main.java.utils.TimeUtils;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -32,36 +31,25 @@ public class SchedulerService {
         exceptionService = new ExceptionService();
     }
 
-    public void start(String projectName) {
-        SchedulerThread schedulerThread = new SchedulerThread(projectName, LocalDateTime.now());
+    public void start(int projectsId) {
+        SchedulerThread schedulerThread = new SchedulerThread(projectsId, LocalDateTime.now());
         schedulerThread.start();
         schedulerThreadList.add(schedulerThread);
     }
 
-    public void stop(String projectName) {
-        SchedulerThread schedulerThread = getSchedulerThreadByProjectName(projectName);
-        SchedulerModel schedulerModel = createSchedulerModel(projectName, schedulerThread.getStartTime(), LocalDateTime.now());
+    public void stop(int projectsId) {
+        SchedulerThread schedulerThread = getSchedulerThreadByProjectsId(projectsId);
+        SchedulerModel schedulerModel = createSchedulerModel(projectsId, schedulerThread.getStartTime(), LocalDateTime.now());
 
         if(Objects.nonNull(schedulerThread) && Objects.nonNull(schedulerModel)) {
             schedulerEndpoint.insert(schedulerModel);
             schedulerThread.interrupt();
-            System.out.println(translations.getString("stop_tracking") + " \"" + projectName + "\"");
-        }
-    }
-
-    public void pause(String projectName) {
-        SchedulerThread schedulerThread = getSchedulerThreadByProjectName(projectName);
-        try {
-            schedulerThread.wait();
-        } catch (InterruptedException e) {
-            exceptionService.logging(this.getClass().getName(), e.getMessage());
         }
     }
 
     public void active() {
         for(SchedulerThread schedulerThread : schedulerThreadList) {
-            System.out.println(TimeUtils.getFormattedTime(schedulerThread.getStartTime()) + ": " +
-                    schedulerThread.getProjectName());
+            // TODO: 11.06.20 implement
         }
     }
 
@@ -69,19 +57,12 @@ public class SchedulerService {
         LocalDateTime startDateTime = TimeUtils.getFirstDateOfMonth(month);
         LocalDateTime stopDateTime = TimeUtils.getLastDateOfMonth(month);
 
-        List<SchedulerModel> schedulerModelList;
-        if(StringUtils.equals(projectName, "all")) {
-            schedulerModelList = schedulerEndpoint.getByDateRange(startDateTime, stopDateTime);
-        } else {
-            schedulerModelList = schedulerEndpoint.getByProjectNameAndDateRange(projectName, startDateTime, stopDateTime);
-        }
-
-        csvService.exportAsFile(schedulerModelList);
+        // todo: implements export
     }
 
-    private SchedulerThread getSchedulerThreadByProjectName(String projectName) {
+    private SchedulerThread getSchedulerThreadByProjectsId(int projectsId) {
         for(SchedulerThread schedulerThread : schedulerThreadList){
-            if(StringUtils.equals(schedulerThread.getProjectName(),projectName)){
+            if(Objects.equals(schedulerThread.getProjectsId(), projectsId)){
                 return schedulerThread;
             }
         }
@@ -89,13 +70,13 @@ public class SchedulerService {
         return null;
     }
 
-    private SchedulerModel createSchedulerModel(String projectName, LocalDateTime startTime, LocalDateTime stopTime) {
-        if(StringUtils.isEmpty(projectName) || Objects.isNull(startTime) || Objects.isNull(stopTime)) {
+    private SchedulerModel createSchedulerModel(Integer projectsId, LocalDateTime startTime, LocalDateTime stopTime) {
+        if(Objects.isNull(projectsId) || Objects.isNull(startTime) || Objects.isNull(stopTime)) {
             return null;
         }
 
         SchedulerModel schedulerModel = new SchedulerModel();
-        schedulerModel.setProjectName(projectName);
+        schedulerModel.setProjectsId(projectsId);
         schedulerModel.setStartTime(startTime);
         schedulerModel.setStopTime(stopTime);
 

@@ -1,17 +1,42 @@
-package models;
-
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+package main.java.models;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
-@NoArgsConstructor
 public class SchedulerModel {
     private int id;
-    private String projectName;
+    private Integer projectsId;
     private LocalDateTime startTime;
     private LocalDateTime stopTime;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Integer getProjectsId() {
+        return projectsId;
+    }
+
+    public void setProjectsId(Integer projectsId) {
+        this.projectsId = projectsId;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getStopTime() {
+        return stopTime;
+    }
+
+    public void setStopTime(LocalDateTime stopTime) {
+        this.stopTime = stopTime;
+    }
 }

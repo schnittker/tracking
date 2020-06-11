@@ -1,6 +1,6 @@
-package utils;
+package main.java.utils;
 
-import models.SchedulerModel;
+import main.java.models.SchedulerModel;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -11,9 +11,13 @@ import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 public class TimeUtils {
+    ResourceBundle translations = ResourceBundle.getBundle("i18n.Messages", Locale.getDefault());
+
     public static String getFormattedDate(LocalDateTime dateTime) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         return dateTime.format(formatter);
@@ -26,6 +30,17 @@ public class TimeUtils {
 
     public static long computeHours(LocalDateTime startTime, LocalDateTime stopTime) {
         return ChronoUnit.HOURS.between(startTime, stopTime);
+    }
+
+    public static String computeMinutes(LocalDateTime startTime, LocalDateTime stopTime) {
+        long minutes = ChronoUnit.MINUTES.between(startTime, stopTime);
+        long hours = minutes / 60;
+
+        String result = String.valueOf(minutes - (hours * 60));
+        if(result.length() == 1) {
+            result = 0 + result;
+        }
+        return result;
     }
 
     public static long computeTotalHours(List<SchedulerModel> schedulerModelList) {
@@ -43,19 +58,19 @@ public class TimeUtils {
         return LocalDateTime.parse(dateTimeString, formatter);
     }
 
-    public static Map<String, Long> getTotalHoursAsProjectsMap(List<SchedulerModel> schedulerModelList) {
-        Map<String, Long> projectsMap = new HashMap<String, Long>();
+    public static Map<Integer, Long> getTotalHoursAsProjectsMap(List<SchedulerModel> schedulerModelList) {
+        Map<Integer, Long> projectsMap = new HashMap<Integer, Long>();
 
         for(SchedulerModel schedulerModel : schedulerModelList) {
             long currentHours = computeHours(schedulerModel.getStartTime(), schedulerModel.getStopTime());
-            String projectName = schedulerModel.getProjectName();
+            Integer projectsId = schedulerModel.getProjectsId();
 
-            if(projectsMap.containsKey(projectName)) {
-                long totalProjectHours = projectsMap.get(projectName);
-                totalProjectHours += currentHours;
-                projectsMap.put(projectName, totalProjectHours);
+            if(projectsMap.containsKey(projectsId)) {
+                Long totalProjectHours = projectsMap.get(projectsId);
+                totalProjectHours = Long.valueOf(totalProjectHours.longValue() + currentHours);
+                projectsMap.put(projectsId, Long.valueOf(totalProjectHours.longValue()));
             } else {
-                projectsMap.put(projectName, currentHours);
+                projectsMap.put(projectsId, Long.valueOf(currentHours));
             }
         }
 
@@ -65,6 +80,11 @@ public class TimeUtils {
     public static int getCurrentYear() {
         LocalDate localDate = LocalDate.now();
         return localDate.getYear();
+    }
+
+    public static Month getCurrentMonth() {
+        LocalDate localDate = LocalDate.now();
+        return localDate.getMonth();
     }
 
     public static LocalDateTime getFirstDateOfMonth(int month) {

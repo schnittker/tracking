@@ -1,10 +1,10 @@
-package services;
+package main.java.services;
 
-import helper.PropertiesLoader;
-import models.SchedulerModel;
+import main.java.helper.PropertiesLoader;
+import main.java.models.SchedulerModel;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
-import utils.TimeUtils;
+import main.java.utils.TimeUtils;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -37,30 +37,22 @@ public class CsvService {
                      translations.getString("csv_header_start_time"), translations.getString("csv_header_stop_time"),
                      translations.getString("csv_header_hours")))) {
 
-            int stepSize = schedulerModelList.size() / 10;
-            System.out.print("[");
-
             for(SchedulerModel schedulerModel : schedulerModelList) {
                 long curHours = TimeUtils.computeHours(schedulerModel.getStartTime(), schedulerModel.getStopTime());
                 String date = TimeUtils.getFormattedDate(schedulerModel.getStartTime());
                 String startTime = TimeUtils.getFormattedTime(schedulerModel.getStartTime());
                 String stopTime = TimeUtils.getFormattedTime(schedulerModel.getStopTime());
 
-                csvPrinter.printRecord(date, schedulerModel.getProjectName(), startTime, stopTime, Long.valueOf(curHours));
-
-                for(int progressIndex = 0; progressIndex <= stepSize; progressIndex++) {
-                    System.out.print("=");
-                }
+                csvPrinter.printRecord(date, schedulerModel.getProjectsId(), startTime, stopTime, Long.valueOf(curHours));
             }
 
             csvPrinter.println();
 
-            Map<String, Long> projectsMap = TimeUtils.getTotalHoursAsProjectsMap(schedulerModelList);
+            Map<Integer, Long> projectsMap = TimeUtils.getTotalHoursAsProjectsMap(schedulerModelList);
             for(Map.Entry projectEntry : projectsMap.entrySet()) {
                 csvPrinter.printRecord(projectEntry.getKey(), projectEntry.getValue());
             }
 
-            System.out.print("] 100%\n");
             csvPrinter.flush();
         } catch (IOException e) {
             exceptionService.logging(this.getClass().getName(), e.getMessage());
