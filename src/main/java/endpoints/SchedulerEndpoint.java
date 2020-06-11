@@ -46,9 +46,9 @@ public class SchedulerEndpoint {
     }
 
     public DefaultTableModel getByDateRange(LocalDateTime from, LocalDateTime to) {
-        String[] headline = {translations.getString("csv_header_project_name"), translations.getString("csv_header_date"),
-                translations.getString("csv_header_start_time"), translations.getString("csv_header_stop_time"),
-                translations.getString("csv_header_hours")};
+        String[] headline = {translations.getString("header_project_name"), translations.getString("header_date"),
+                translations.getString("header_start_time"), translations.getString("header_stop_time"),
+                translations.getString("header_hours")};
         DefaultTableModel defaultTableModel = new DefaultTableModel(headline, 0);
 
         try {
@@ -84,9 +84,9 @@ public class SchedulerEndpoint {
     }
 
     public DefaultTableModel getByProjectsIdAndDateRange(int projectsId, LocalDateTime from, LocalDateTime to) {
-        String[] headline = {translations.getString("csv_header_project_name"), translations.getString("csv_header_date"),
-                translations.getString("csv_header_start_time"), translations.getString("csv_header_stop_time"),
-                translations.getString("csv_header_hours")};
+        String[] headline = {translations.getString("header_project_name"), translations.getString("header_date"),
+                translations.getString("header_start_time"), translations.getString("header_stop_time"),
+                translations.getString("header_hours")};
         DefaultTableModel defaultTableModel = new DefaultTableModel(headline, 0);
 
         try {
