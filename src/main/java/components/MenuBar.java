@@ -14,7 +14,7 @@ public class MenuBar {
     private JMenuItem exitItem;
 
     public MenuBar() {
-        translation = ResourceBundle.getBundle("i18n.Gui", Locale.getDefault());
+        translation = ResourceBundle.getBundle("i18n.Messages", Locale.getDefault());
     }
 
     public JMenuBar createMenu() {
