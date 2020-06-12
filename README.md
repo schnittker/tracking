@@ -5,7 +5,7 @@ schnittker@neozo.de
 ## Description
 Tracking is a small multi lingual application to track the time you are working on a project. 
 
-## How to install
+## How to build
 ```bash
 gradle buildJar
 java -jar ./build/lib/tracking.jar
@@ -44,4 +44,4 @@ Currently the program is completely translated into english and german.
 * Docker
 * Apache Commons
 * Apache Commons Csv
-* Jackson Json
+* jFreechart
