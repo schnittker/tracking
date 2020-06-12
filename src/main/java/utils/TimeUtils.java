@@ -1,5 +1,7 @@
 package main.java.utils;
 
+import main.java.models.SchedulerModel;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -7,6 +9,9 @@ import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author markus schnittker
@@ -68,5 +73,24 @@ public class TimeUtils {
         }
 
         return hours + ":" + minutes;
+    }
+
+    public static Map<String, Long> getTotalMinutesByProjectAsMap(List<SchedulerModel> schedulerModelList) {
+        Map<String, Long> projectsMap = new HashMap<String, Long>();
+
+        for(SchedulerModel schedulerModel : schedulerModelList) {
+            long currentMinutes = ChronoUnit.MINUTES.between(schedulerModel.getStartTime(), schedulerModel.getStopTime());
+            String projectName = schedulerModel.getProjectName();
+
+            if(projectsMap.containsKey(projectName)) {
+                Long totalProjectMinutes = projectsMap.get(projectName);
+                totalProjectMinutes = totalProjectMinutes.longValue() + currentMinutes;
+                projectsMap.put(projectName, totalProjectMinutes);
+            } else {
+                projectsMap.put(projectName, currentMinutes);
+            }
+        }
+
+        return projectsMap;
     }
 }

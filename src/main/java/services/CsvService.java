@@ -10,8 +10,6 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.temporal.ChronoUnit;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -70,30 +68,11 @@ public class CsvService {
     }
 
     private void writeFooter(List<SchedulerModel> schedulerModelList, CSVPrinter csvPrinter) throws IOException {
-        Map<String, Long> projectsMap = getTotalMinutesByProjectAsMap(schedulerModelList);
+        Map<String, Long> projectsMap = TimeUtils.getTotalMinutesByProjectAsMap(schedulerModelList);
         csvPrinter.println();
         for(Map.Entry<String, Long> projectEntry : projectsMap.entrySet()) {
             String totalTime = TimeUtils.getWorkingTimeAsString(projectEntry.getValue());
             csvPrinter.printRecord(projectEntry.getKey(), totalTime);
         }
-    }
-
-    private Map<String, Long> getTotalMinutesByProjectAsMap(List<SchedulerModel> schedulerModelList) {
-        Map<String, Long> projectsMap = new HashMap<String, Long>();
-
-        for(SchedulerModel schedulerModel : schedulerModelList) {
-            long currentMinutes = ChronoUnit.MINUTES.between(schedulerModel.getStartTime(), schedulerModel.getStopTime());
-            String projectName = schedulerModel.getProjectName();
-
-            if(projectsMap.containsKey(projectName)) {
-                Long totalProjectMinutes = projectsMap.get(projectName);
-                totalProjectMinutes = totalProjectMinutes.longValue() + currentMinutes;
-                projectsMap.put(projectName, totalProjectMinutes);
-            } else {
-                projectsMap.put(projectName, currentMinutes);
-            }
-        }
-
-        return projectsMap;
     }
 }

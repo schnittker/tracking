@@ -57,6 +57,13 @@ public class SchedulerService {
         csvService.exportAsFile(schedulerModelList);
     }
 
+    public List<SchedulerModel> getSchedulerModelList(int month) {
+        LocalDateTime startDateTime = TimeUtils.getFirstDateOfMonth(month);
+        LocalDateTime stopDateTime = TimeUtils.getLastDateOfMonth(month);
+
+        return schedulerEndpoint.getByDateRangeForExport(startDateTime, stopDateTime);
+    }
+
     private SchedulerThread getSchedulerThreadByProjectsId(int projectsId) {
         SchedulerThread curSchedulerThread = null;
         for(SchedulerThread schedulerThread : schedulerThreadList){

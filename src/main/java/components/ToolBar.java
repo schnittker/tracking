@@ -26,6 +26,8 @@ public class ToolBar {
     private ImageIcon iconTrackerStop;
     private JButton btnExport;
     private ImageIcon iconExport;
+    private JButton btnChart;
+    private ImageIcon iconChart;
     private JButton btnExit;
     private ImageIcon iconExit;
 
@@ -77,6 +79,15 @@ public class ToolBar {
             }
         });
 
+        iconChart = new ImageIcon(getClass().getResource("/icons/chart.png"));
+        btnChart = new JButton(iconChart);
+        btnChart.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ChartDialog().createChart();
+            }
+        });
+
         iconExit = new ImageIcon(getClass().getResource("/icons/logout.png"));
         btnExit = new JButton(iconExit);
         btnExit.addActionListener(new ActionListener() {
@@ -90,6 +101,7 @@ public class ToolBar {
         toolBar.add(btnTrackerStop);
         toolBar.addSeparator();
         toolBar.add(btnExport);
+        toolBar.add(btnChart);
         toolBar.addSeparator();
         toolBar.add(btnExit);
 
