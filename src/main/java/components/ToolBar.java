@@ -20,10 +20,6 @@ public class ToolBar {
     private final ResourceBundle translations;
 
     private JToolBar toolBar;
-    private JButton btnAddProject;
-    private ImageIcon iconAddProject;
-    private JButton btnRemoveProject;
-    private ImageIcon iconRemoveProject;
     private JButton btnTrackerStart;
     private ImageIcon iconTrackerStart;
     private JButton btnTrackerStop;
@@ -40,24 +36,6 @@ public class ToolBar {
 
     public JToolBar createToolbar() {
         toolBar = new JToolBar();
-
-        iconAddProject = new ImageIcon(getClass().getResource("/icons/plus.png"));
-        btnAddProject = new JButton(iconAddProject);
-        btnAddProject.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                TrackingApplication.projectList.addNewProject();
-            }
-        });
-
-        iconRemoveProject = new ImageIcon(getClass().getResource("/icons/minus.png"));
-        btnRemoveProject = new JButton(iconRemoveProject);
-        btnRemoveProject.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                TrackingApplication.projectList.removeProject();
-            }
-        });
 
         iconTrackerStart = new ImageIcon(getClass().getResource("/icons/play.png"));
         btnTrackerStart = new JButton(iconTrackerStart);
@@ -114,9 +92,6 @@ public class ToolBar {
         toolBar.add(btnTrackerStop);
         toolBar.addSeparator();
         toolBar.add(btnExport);
-        toolBar.addSeparator();
-        toolBar.add(btnAddProject);
-        toolBar.add(btnRemoveProject);
         toolBar.addSeparator();
         toolBar.add(btnExit);
 
