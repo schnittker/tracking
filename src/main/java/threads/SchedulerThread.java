@@ -18,12 +18,14 @@ public class SchedulerThread extends Thread{
     private final ResourceBundle translations;
 
     private final int projectsId;
+    private final String projectName;
     private final LocalDateTime startTime;
     private Timer timer;
 
-    public SchedulerThread(int projectsId, LocalDateTime startTime) {
+    public SchedulerThread(int projectsId, String projectName, LocalDateTime startTime) {
         translations = ResourceBundle.getBundle("i18n.Messages", Locale.getDefault());
         this.projectsId = projectsId;
+        this.projectName = projectName;
         this.startTime = startTime;
     }
 
@@ -52,7 +54,7 @@ public class SchedulerThread extends Thread{
                 LocalDateTime now = LocalDateTime.now();
                 long hours = TimeUtils.computeHours(getStartTime(), now);
                 String minutes = TimeUtils.computeMinutes(getStartTime(), now);
-                TrackingApplication.statusBar.setMessage(hours + ":" + minutes);
+                TrackingApplication.statusBar.setMessage(projectName + " " + hours + ":" + minutes);
             }
         }, 0, SECONDS);
     }

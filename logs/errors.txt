@@ -9,3 +9,6 @@ Database: Communications link failure
 The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
 endpoints.SchedulerEndpoint: null
 main.java.endpoints.ProjectsEndpoint: Column 'project_name' cannot be null
+main.java.endpoints.ProjectsEndpoint: Before start of result set
+main.java.endpoints.ProjectsEndpoint: Before start of result set
+main.java.endpoints.ProjectsEndpoint: Before start of result set

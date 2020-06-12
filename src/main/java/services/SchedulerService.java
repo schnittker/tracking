@@ -21,6 +21,7 @@ public class SchedulerService {
     private final SchedulerEndpoint schedulerEndpoint;
     private final CsvService csvService;
     private final ExceptionService exceptionService;
+    private final ProjectService projectService;
 
     private List<SchedulerThread> schedulerThreadList = new ArrayList<>();
 
@@ -29,10 +30,12 @@ public class SchedulerService {
         schedulerEndpoint = new SchedulerEndpoint();
         csvService = new CsvService();
         exceptionService = new ExceptionService();
+        projectService = new ProjectService();
     }
 
     public void start(int projectsId) {
-        SchedulerThread schedulerThread = new SchedulerThread(projectsId, LocalDateTime.now());
+        String projectName = projectService.getProjectNameById(projectsId);
+        SchedulerThread schedulerThread = new SchedulerThread(projectsId, projectName, LocalDateTime.now());
         schedulerThread.start();
         schedulerThreadList.add(schedulerThread);
     }

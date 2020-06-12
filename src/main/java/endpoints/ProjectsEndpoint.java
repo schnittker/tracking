@@ -67,4 +67,23 @@ public class ProjectsEndpoint {
             exceptionService.logging(this.getClass().getName(), e.getMessage());
         }
     }
+
+    public String getProjectNameById(int projectsId) {
+        try {
+            String sql = "SELECT project_name FROM projects WHERE id = ?";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, projectsId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if(resultSet.next()) {
+                return resultSet.getString(1);
+            }
+
+        } catch (SQLException e) {
+            exceptionService.logging(this.getClass().getName(), e.getMessage());
+        }
+
+        return "";
+    }
 }
