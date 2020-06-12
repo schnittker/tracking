@@ -12,7 +12,7 @@ public class StatusBar {
     public JPanel createStatusBar() {
         statusPanel = new JPanel();
         lblStatus = new JLabel();
-
+        lblStatus.setHorizontalTextPosition(SwingConstants.LEFT);
         statusPanel.add(lblStatus);
         return statusPanel;
     }

@@ -43,6 +43,7 @@ public class SchedulerService {
 
         if(Objects.nonNull(schedulerThread) && Objects.nonNull(schedulerModel)) {
             schedulerEndpoint.insert(schedulerModel);
+            schedulerThread.getTimer().cancel();
             schedulerThread.interrupt();
         }
     }
