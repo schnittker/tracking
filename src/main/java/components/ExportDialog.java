@@ -2,6 +2,7 @@ package main.java.components;
 
 import main.java.TrackingApplication;
 import main.java.services.SchedulerService;
+import main.java.utils.FrameUtils;
 import main.java.utils.TimeUtils;
 
 import javax.swing.*;
@@ -16,12 +17,10 @@ import java.util.ResourceBundle;
  * @author markus schnittker
  */
 public class ExportDialog {
-    private static final Dimension SCREEN_SIZE = Toolkit.getDefaultToolkit().getScreenSize();
-
     private final ResourceBundle translations;
     private final SchedulerService schedulerService;
 
-    private JDialog mainFrame;
+    private JFrame mainFrame;
     private JComboBox comboBoxMonth;
     private JButton btnOk;
 
@@ -33,7 +32,7 @@ public class ExportDialog {
     }
 
     public void createDialog() {
-        mainFrame = new JDialog();
+        mainFrame = new JFrame();
         mainFrame.setTitle(translations.getString("dialog.select_month.headline"));
 
         Integer[] monthArr = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
@@ -69,8 +68,6 @@ public class ExportDialog {
         mainFrame.setVisible(true);
         mainFrame.pack();
 
-        int x = (int) ((SCREEN_SIZE.getWidth() - mainFrame.getWidth()) / 2);
-        int y = (int) ((SCREEN_SIZE.getHeight() - mainFrame.getHeight()) / 2);
-        mainFrame.setLocation(x, y);
+        FrameUtils.centerFrame(mainFrame);
     }
 }

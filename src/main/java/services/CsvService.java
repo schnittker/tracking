@@ -24,7 +24,6 @@ import static main.java.utils.TimeUtils.computeHours;
  */
 
 public class CsvService {
-
     private final ResourceBundle translations;
     private final ExceptionService exceptionService;
 

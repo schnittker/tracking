@@ -3,7 +3,7 @@ package main.java.services;
 import main.java.endpoints.ProjectsEndpoint;
 
 public class ProjectService {
-    private ProjectsEndpoint projectsEndpoint;
+    private final ProjectsEndpoint projectsEndpoint;
 
     public ProjectService() {
         projectsEndpoint = new ProjectsEndpoint();

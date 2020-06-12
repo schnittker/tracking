@@ -5,6 +5,7 @@ import main.java.components.ProjectList;
 import main.java.components.StatusBar;
 import main.java.components.TableView;
 import main.java.components.ToolBar;
+import main.java.utils.FrameUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,14 +14,13 @@ import java.awt.*;
  * @author markus schnitter
  */
 public class TrackingApplication {
+    private static final Dimension MAIN_SIZE = new Dimension(800, 500);
+
     public static MenuBar menuBar;
     public static ToolBar toolBar;
     public static ProjectList projectList;
     public static TableView tableView;
     public static StatusBar statusBar;
-
-    private static final Dimension MAIN_SIZE = new Dimension(800, 500);
-    private static final Dimension SCREEN_SIZE = Toolkit.getDefaultToolkit().getScreenSize();
 
     private JFrame frame;
     private JSplitPane mainSplitPane;
@@ -29,7 +29,11 @@ public class TrackingApplication {
     private JScrollPane tableScrollPane;
 
     public TrackingApplication() {
-        initComponents();
+        menuBar = new MenuBar();
+        toolBar = new ToolBar();
+        projectList = new ProjectList();
+        tableView = new TableView();
+        statusBar =  new StatusBar();
     }
 
     public static void main(String... args) {
@@ -39,14 +43,6 @@ public class TrackingApplication {
                 new TrackingApplication().createGui();
             }
         });
-    }
-
-    private void initComponents() {
-        menuBar = new MenuBar();
-        toolBar = new ToolBar();
-        projectList = new ProjectList();
-        tableView = new TableView();
-        statusBar =  new StatusBar();
     }
 
     private void createGui() {
@@ -75,8 +71,6 @@ public class TrackingApplication {
         frame.pack();
         frame.setVisible(true);
 
-        int x = (int) ((SCREEN_SIZE.getWidth() - frame.getWidth()) / 2);
-        int y = (int) ((SCREEN_SIZE.getHeight() - frame.getHeight()) / 2);
-        frame.setLocation(x, y);
+        FrameUtils.centerFrame(frame);
     }
 }
