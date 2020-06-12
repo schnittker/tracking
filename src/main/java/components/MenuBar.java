@@ -21,6 +21,7 @@ public class MenuBar {
     private JMenuItem exitItem;
     private JMenuItem addProjectItem;
     private JMenuItem removeProjectItem;
+    private JMenuItem infoItem;
 
     public MenuBar() {
         translation = ResourceBundle.getBundle("i18n.Messages", Locale.getDefault());
@@ -34,6 +35,7 @@ public class MenuBar {
         exitItem = new JMenuItem(translation.getString("menu_bar.menu.file.exit"));
         addProjectItem = new JMenuItem(translation.getString("menu_bar.menu.project.add_project"));
         removeProjectItem = new JMenuItem(translation.getString("menu_bar.menu.project.remove_project"));
+        infoItem = new JMenuItem("?");
 
         menuBar.add(fileMenu);
         menuBar.add(projectMenu);
@@ -43,6 +45,8 @@ public class MenuBar {
 
         projectMenu.add(addProjectItem);
         projectMenu.add(removeProjectItem);
+
+        helpMenu.add(infoItem);
 
         //exitItem.setMnemonic(KeyEvent.VK_Q);
 
@@ -63,6 +67,13 @@ public class MenuBar {
         exitItem.addActionListener(new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
+            }
+        });
+
+        infoItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "https://github.com/schnittker", "", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
