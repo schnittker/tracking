@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
@@ -20,6 +21,7 @@ public class ProjectList {
     private final ResourceBundle translations;
 
     private JTree projectTree;
+    private DefaultMutableTreeNode root;
 
     private Integer selectedProject;
 
@@ -30,7 +32,7 @@ public class ProjectList {
 
     public JTree createTree() {
         List<String> projectList = projectsEndpoint.getForProjectTree();
-        DefaultMutableTreeNode root = processHierarchy(projectList);
+        root = processHierarchy(projectList);
         projectTree = new JTree(root);
 
         projectTree.addMouseListener(new MouseAdapter() {
@@ -46,6 +48,25 @@ public class ProjectList {
         });
 
         return projectTree;
+    }
+
+    public void addNewProject() {
+        String projectName = JOptionPane.showInputDialog(null,translations.getString("project_name"),
+                translations.getString("new_project"), JOptionPane.PLAIN_MESSAGE);
+
+        projectsEndpoint.addNewProject(projectName);
+    }
+
+    public void removeProject() {
+        if(Objects.isNull(selectedProject)) {
+            return;
+        }
+
+        int reply = JOptionPane.showConfirmDialog(null, translations.getString("delete_sure"),
+                translations.getString("delete_project"), JOptionPane.YES_NO_OPTION);
+        if (reply == JOptionPane.YES_OPTION) {
+            projectsEndpoint.removeById(selectedProject);
+        }
     }
 
     public Integer getSelectedProject() {

@@ -22,7 +22,7 @@ public class ProjectsEndpoint {
         exceptionService = new ExceptionService();
     }
 
-    public void insert(String projectName) {
+    public void addNewProject(String projectName) {
         try {
             String sql = "INSERT INTO projects (project_name) VALUES(?)";
 
@@ -53,5 +53,18 @@ public class ProjectsEndpoint {
         }
 
         return projectList;
+    }
+
+    public void removeById(Integer projectId) {
+        try {
+            String sql = "DELETE FROM projects WHERE id = ?";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, projectId);
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            exceptionService.logging(this.getClass().getName(), e.getMessage());
+        }
     }
 }
