@@ -39,9 +39,8 @@ public class SchedulerService {
 
     public void stop(int projectsId) {
         SchedulerThread schedulerThread = getSchedulerThreadByProjectsId(projectsId);
-        SchedulerModel schedulerModel = createSchedulerModel(projectsId, schedulerThread.getStartTime(), LocalDateTime.now());
-
-        if(Objects.nonNull(schedulerThread) && Objects.nonNull(schedulerModel)) {
+        if(Objects.nonNull(schedulerThread)) {
+            SchedulerModel schedulerModel = createSchedulerModel(projectsId, schedulerThread.getStartTime(), LocalDateTime.now());
             schedulerEndpoint.insert(schedulerModel);
             schedulerThread.getTimer().cancel();
             schedulerThread.interrupt();
@@ -56,13 +55,18 @@ public class SchedulerService {
     }
 
     private SchedulerThread getSchedulerThreadByProjectsId(int projectsId) {
+        SchedulerThread curSchedulerThread = null;
         for(SchedulerThread schedulerThread : schedulerThreadList){
             if(Objects.equals(schedulerThread.getProjectsId(), projectsId)){
-                return schedulerThread;
+                curSchedulerThread = schedulerThread;
             }
         }
 
-        return null;
+        if(Objects.nonNull(curSchedulerThread)) {
+            schedulerThreadList.remove(curSchedulerThread);
+        }
+
+        return curSchedulerThread;
     }
 
     private SchedulerModel createSchedulerModel(Integer projectsId, LocalDateTime startTime, LocalDateTime stopTime) {
