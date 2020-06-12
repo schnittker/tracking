@@ -1,4 +1,4 @@
-package main.java.components;
+package main.java.components.dialogs;
 
 import main.java.models.SchedulerModel;
 import main.java.services.SchedulerService;

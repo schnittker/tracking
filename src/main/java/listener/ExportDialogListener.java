@@ -1,6 +1,6 @@
 package main.java.listener;
 
-import main.java.components.ExportDialog;
+import main.java.components.dialogs.ExportDialog;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

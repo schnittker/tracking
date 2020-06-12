@@ -1,4 +1,4 @@
-package main.java.components;
+package main.java.components.dialogs;
 
 import main.java.TrackingApplication;
 import main.java.services.SchedulerService;

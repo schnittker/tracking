@@ -1,6 +1,6 @@
 package main.java.listener;
 
-import main.java.components.ChartDialog;
+import main.java.components.dialogs.ChartDialog;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
