@@ -12,3 +12,4 @@ main.java.endpoints.ProjectsEndpoint: Column 'project_name' cannot be null
 main.java.endpoints.ProjectsEndpoint: Before start of result set
 main.java.endpoints.ProjectsEndpoint: Before start of result set
 main.java.endpoints.ProjectsEndpoint: Before start of result set
+main.java.endpoints.ProjectsEndpoint: Column 'project_name' cannot be null

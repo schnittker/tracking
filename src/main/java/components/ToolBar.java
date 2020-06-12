@@ -2,12 +2,10 @@ package main.java.components;
 
 import main.java.TrackingApplication;
 import main.java.services.SchedulerService;
-import main.java.utils.TimeUtils;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.Month;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -18,6 +16,8 @@ import java.util.ResourceBundle;
 public class ToolBar {
     private final SchedulerService schedulerService;
     private final ResourceBundle translations;
+
+    private ExportDialog exportDialog;
 
     private JToolBar toolBar;
     private JButton btnTrackerStart;
@@ -73,9 +73,7 @@ public class ToolBar {
         btnExport.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Month currentMonth = TimeUtils.getCurrentMonth();
-                schedulerService.export(currentMonth.getValue());
-                TrackingApplication.statusBar.setMessage(translations.getString("export_data"));
+                new ExportDialog().createDialog();
             }
         });
 
