@@ -13,3 +13,4 @@ main.java.endpoints.ProjectsEndpoint: Before start of result set
 main.java.endpoints.ProjectsEndpoint: Before start of result set
 main.java.endpoints.ProjectsEndpoint: Before start of result set
 main.java.endpoints.ProjectsEndpoint: Column 'project_name' cannot be null
+main.java.endpoints.SchedulerEndpoint: Cannot add or update a child row: a foreign key constraint fails (`tracking`.`scheduler`, CONSTRAINT `fk_project_id` FOREIGN KEY (`projects_id`) REFERENCES `projects` (`id`))

@@ -26,7 +26,7 @@ public class TableView {
         defaultModel = getDefaultModel();
         schedulerTable = new JTable(defaultModel);
         schedulerTable.setShowGrid(true);
-        schedulerTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        schedulerTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         schedulerTable.setFillsViewportHeight(true);
         schedulerTable.setGridColor(Color.BLACK);
 
