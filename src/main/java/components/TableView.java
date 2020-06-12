@@ -1,6 +1,6 @@
 package main.java.components;
 
-import main.java.endpoints.SchedulerEndpoint;
+import main.java.services.SchedulerService;
 import main.java.utils.TimeUtils;
 
 import javax.swing.*;
@@ -13,13 +13,13 @@ import java.time.Month;
  * @author markus schnittker
  */
 public class TableView {
-    private final SchedulerEndpoint schedulerEndpoint;
+    private final SchedulerService schedulerService;
 
     private JTable schedulerTable;
     private DefaultTableModel defaultModel;
 
     public TableView() {
-        schedulerEndpoint = new SchedulerEndpoint();
+        schedulerService = new SchedulerService();
     }
 
     public JTable createTable() {
@@ -37,7 +37,7 @@ public class TableView {
         Month month = TimeUtils.getCurrentMonth();
         LocalDateTime firstDateTimeOfMonth = TimeUtils.getFirstDateOfMonth(month.getValue());
         LocalDateTime lastDateTimeOfMonth = TimeUtils.getLastDateOfMonth(month.getValue());
-        DefaultTableModel byProjectsIdAndDateRange = schedulerEndpoint.getByProjectsIdAndDateRange(projectsId.intValue(),
+        DefaultTableModel byProjectsIdAndDateRange = schedulerService.getByProjectsIdAndDateRange(projectsId.intValue(),
                 firstDateTimeOfMonth, lastDateTimeOfMonth);
 
         schedulerTable.setModel(byProjectsIdAndDateRange);
@@ -54,7 +54,7 @@ public class TableView {
         Month month = TimeUtils.getCurrentMonth();
         LocalDateTime firstDateTimeOfMonth = TimeUtils.getFirstDateOfMonth(month.getValue());
         LocalDateTime lastDateTimeOfMonth = TimeUtils.getLastDateOfMonth(month.getValue());
-        DefaultTableModel byDateRange = schedulerEndpoint.getByDateRange(firstDateTimeOfMonth, lastDateTimeOfMonth);
+        DefaultTableModel byDateRange = schedulerService.getByDateRange(firstDateTimeOfMonth, lastDateTimeOfMonth);
 
         return byDateRange;
     }

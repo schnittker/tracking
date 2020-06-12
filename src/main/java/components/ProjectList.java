@@ -1,7 +1,7 @@
 package main.java.components;
 
 import main.java.TrackingApplication;
-import main.java.endpoints.ProjectsEndpoint;
+import main.java.services.ProjectService;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
  * @author markus schnittker
  */
 public class ProjectList {
-    private final ProjectsEndpoint projectsEndpoint;
+    private final ProjectService projectService;
     private final ResourceBundle translations;
 
     private JTree projectTree;
@@ -26,12 +26,12 @@ public class ProjectList {
     private Integer selectedProject;
 
     public ProjectList() {
-        projectsEndpoint = new ProjectsEndpoint();
+        projectService = new ProjectService();
         translations = ResourceBundle.getBundle("i18n.Messages", Locale.getDefault());
     }
 
     public JTree createTree() {
-        List<String> projectList = projectsEndpoint.getForProjectTree();
+        List<String> projectList = projectService.getForProjectTree();
         root = processHierarchy(projectList);
         projectTree = new JTree(root);
 
@@ -54,7 +54,7 @@ public class ProjectList {
         String projectName = JOptionPane.showInputDialog(null,translations.getString("project_name"),
                 translations.getString("new_project"), JOptionPane.PLAIN_MESSAGE);
 
-        projectsEndpoint.addNewProject(projectName);
+        projectService.addNewProject(projectName);
     }
 
     public void removeProject() {
@@ -65,7 +65,7 @@ public class ProjectList {
         int reply = JOptionPane.showConfirmDialog(null, translations.getString("delete_sure"),
                 translations.getString("delete_project"), JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
-            projectsEndpoint.removeById(selectedProject);
+            projectService.removeProjectById(selectedProject);
         }
     }
 

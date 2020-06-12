@@ -2,6 +2,8 @@ package main.java.services;
 
 import main.java.endpoints.ProjectsEndpoint;
 
+import java.util.List;
+
 public class ProjectService {
     private final ProjectsEndpoint projectsEndpoint;
 
@@ -11,5 +13,17 @@ public class ProjectService {
 
     public String getProjectNameById(int projectsId) {
         return projectsEndpoint.getProjectNameById(projectsId);
+    }
+
+    public List<String> getForProjectTree() {
+        return projectsEndpoint.getForProjectTree();
+    }
+
+    public void addNewProject(String projectName) {
+        projectsEndpoint.addNewProject(projectName);
+    }
+
+    public void removeProjectById(Integer selectedProject) {
+        projectsEndpoint.removeById(selectedProject);
     }
 }

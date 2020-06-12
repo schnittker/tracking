@@ -5,6 +5,7 @@ import main.java.models.SchedulerModel;
 import main.java.threads.SchedulerThread;
 import main.java.utils.TimeUtils;
 
+import javax.swing.table.DefaultTableModel;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +63,14 @@ public class SchedulerService {
         LocalDateTime stopDateTime = TimeUtils.getLastDateOfMonth(month);
 
         return schedulerEndpoint.getByDateRangeForExport(startDateTime, stopDateTime);
+    }
+
+    public DefaultTableModel getByProjectsIdAndDateRange(int projectsId, LocalDateTime firstDateTimeOfMonth, LocalDateTime lastDateTimeOfMonth) {
+        return schedulerEndpoint.getByProjectsIdAndDateRange(projectsId, firstDateTimeOfMonth, lastDateTimeOfMonth);
+    }
+
+    public DefaultTableModel getByDateRange(LocalDateTime firstDateTimeOfMonth, LocalDateTime lastDateTimeOfMonth) {
+        return schedulerEndpoint.getByDateRange(firstDateTimeOfMonth, lastDateTimeOfMonth);
     }
 
     private SchedulerThread getSchedulerThreadByProjectsId(int projectsId) {
