@@ -19,7 +19,7 @@ public class TrackingApplication {
     public static TableView tableView;
     public static StatusBar statusBar;
 
-    private static final Dimension MAIN_SIZE = new Dimension(900, 500);
+    private static final Dimension MAIN_SIZE = new Dimension(600, 500);
     private static final Dimension SCREEN_SIZE = Toolkit.getDefaultToolkit().getScreenSize();
 
     private JFrame frame;

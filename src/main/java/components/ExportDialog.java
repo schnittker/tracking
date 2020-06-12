@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
@@ -52,9 +53,11 @@ public class ExportDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 selectedMonth = (Integer) comboBoxMonth.getSelectedItem();
-                schedulerService.export(selectedMonth.intValue());
-                TrackingApplication.statusBar.setMessage(translations.getString("export_data"));
-                mainFrame.setVisible(false);
+                if(Objects.nonNull(selectedMonth)) {
+                    schedulerService.export(selectedMonth.intValue());
+                    TrackingApplication.statusBar.setMessage(translations.getString("export_data"));
+                    mainFrame.setVisible(false);
+                }
             }
         });
 
