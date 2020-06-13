@@ -33,7 +33,7 @@ debug_file_path=./logs/errors.txt
 debug_mode=false
 ```
 
-## Multi lingual
+## Multilingual
 You can add new translations to the folder :
 ./resources/i18n
 
