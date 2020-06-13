@@ -39,19 +39,22 @@ public class TrackingApplication {
     }
 
     public static void main(String... args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                setLookAndFeel();
+                new TrackingApplication().createGui();
+            }
+        });
+    }
+
+    private static void setLookAndFeel() {
         try {
             WebLookAndFeel.install (WebDarkSkin.class);
             UIManager.setLookAndFeel (new WebLookAndFeel());
         } catch (UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }
-
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new TrackingApplication().createGui();
-            }
-        });
     }
 
     private void createGui() {

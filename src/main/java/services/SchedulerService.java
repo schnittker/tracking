@@ -24,7 +24,7 @@ public class SchedulerService {
     private final ExceptionService exceptionService;
     private final ProjectService projectService;
 
-    private List<SchedulerThread> schedulerThreadList = new ArrayList<>();
+    private static List<SchedulerThread> schedulerThreadList = new ArrayList<>();
 
     public SchedulerService() {
         translations = ResourceBundle.getBundle("i18n.Messages", Locale.getDefault());
@@ -39,6 +39,7 @@ public class SchedulerService {
         SchedulerThread schedulerThread = new SchedulerThread(projectsId, projectName, LocalDateTime.now());
         schedulerThread.start();
         schedulerThreadList.add(schedulerThread);
+        System.out.println(schedulerThreadList);
     }
 
     public void stop(int projectsId) {
