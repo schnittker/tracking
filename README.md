@@ -1,9 +1,10 @@
 # tracking 
+![screenshot](https://github.com/schnittker/tracking/blob/master/screenshots/screenshot.png?raw=true)
+
+Tracking is a small multi lingual application to track the time you are working on a project. 
+
 If you have a question, just write to 
 schnittker@neozo.de
-
-## Description
-Tracking is a small multi lingual application to track the time you are working on a project. 
 
 ## How to build
 ```bash
