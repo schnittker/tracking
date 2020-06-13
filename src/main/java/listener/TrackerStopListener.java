@@ -24,6 +24,7 @@ public class TrackerStopListener implements ActionListener {
         if(Objects.nonNull(projectsId)) {
             schedulerService.stop(projectsId.intValue());
             TrackingApplication.statusBar.setMessage(translations.getString("stop_tracking"));
+            TrackingApplication.statusBar.setProgressBar(0,0,100);
             TrackingApplication.tableView.getRefreshedDefaults();
         } else {
             TrackingApplication.statusBar.setMessage(translations.getString("no_selected_project"));
