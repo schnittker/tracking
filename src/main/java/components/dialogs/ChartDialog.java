@@ -38,9 +38,9 @@ public class ChartDialog {
         Map<String, Long> totalMinutesByProjectAsMap = TimeUtils.getTotalMinutesByProjectAsMap(schedulerModelList);
         for(Map.Entry<String, Long> project : totalMinutesByProjectAsMap.entrySet()) {
             String projectName = project.getKey();
-            Long totalWorkingTimeInHours = project.getValue() / 60;
+            Long totalWorkingTimeInMinutes = project.getValue();
 
-            pieDataset.setValue(projectName, totalWorkingTimeInHours);
+            pieDataset.setValue(projectName, totalWorkingTimeInMinutes);
         }
 
         chart = ChartFactory.createPieChart(translations.getString("project_chart.headline"), pieDataset, true,false, false);
