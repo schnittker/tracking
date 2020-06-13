@@ -1,5 +1,6 @@
 package main.java.services;
 
+import main.java.TrackingApplication;
 import main.java.helper.PropertiesLoader;
 import main.java.models.SchedulerModel;
 import main.java.utils.TimeUtils;
@@ -56,6 +57,10 @@ public class CsvService {
     }
 
     private void writeContent(List<SchedulerModel> schedulerModelList, CSVPrinter csvPrinter) throws IOException {
+        int minValue = 0;
+        int maxValue = schedulerModelList.size();
+        int currentValue = 0;
+
         for(SchedulerModel schedulerModel : schedulerModelList) {
             String curHours = computeHours(schedulerModel.getStartTime(), schedulerModel.getStopTime()) + ":" + TimeUtils.computeMinutes(schedulerModel.getStartTime(), schedulerModel.getStopTime());
             String date = TimeUtils.getFormattedDate(schedulerModel.getStartTime());
@@ -63,6 +68,9 @@ public class CsvService {
             String stopTime = TimeUtils.getFormattedTime(schedulerModel.getStopTime());
 
             csvPrinter.printRecord(date, schedulerModel.getProjectName(), startTime, stopTime, curHours);
+
+            ++currentValue;
+            TrackingApplication.statusBar.setProgressBar(currentValue, minValue, maxValue);
         }
     }
 
