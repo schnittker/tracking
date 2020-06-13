@@ -1,5 +1,7 @@
 package main.java;
 
+import com.alee.laf.WebLookAndFeel;
+import com.alee.skin.dark.WebDarkSkin;
 import main.java.components.MenuBar;
 import main.java.components.ProjectList;
 import main.java.components.StatusBar;
@@ -37,6 +39,13 @@ public class TrackingApplication {
     }
 
     public static void main(String... args) {
+        try {
+            WebLookAndFeel.install (WebDarkSkin.class);
+            UIManager.setLookAndFeel (new WebLookAndFeel());
+        } catch (UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }
+
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
