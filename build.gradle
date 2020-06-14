@@ -46,6 +46,13 @@ task buildJar(type: Jar) {
     with jar
 }
 
+task copyDockerComposeToBuildDir(type:Copy,dependsOn:[buildJar]) {
+    copy {
+        from "./docker-compose.yml"
+        into "${buildDir}/libs"
+    }
+}
+
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
