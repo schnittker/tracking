@@ -1,4 +1,4 @@
-# tracking 
+# Time tracking for projects 
 ![screenshot](https://github.com/schnittker/tracking/blob/master/screenshots/screenshot.png?raw=true)
 
 Tracking is a small multilingual application to track the time you are working on a project. 
