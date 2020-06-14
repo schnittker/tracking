@@ -7,9 +7,16 @@ If you have a question, just write to
 schnittker@neozo.de
 
 ## How to build
+The first time, "docker-compose up" must be run once to create the container together with the database and tables. 
+For this you have to change to the project directory and execute the following commands : 
 ```bash
-gradle buildJar
-java -jar ./build/lib/tracking.jar
+docker-compose up
+gradle clean && gradle buildJar
+```
+
+Now you can start the program with the following command :
+```bash
+java -jar ./build/libs/tracking-0.2.jar
 ```
 
 ## Database
@@ -51,15 +58,15 @@ If you call it with
 docker-compose up
 ```
 you can start your own docker container for mysql. 
-the container automatically includes /resources/sql/create.sql, and creates the database and tables. 
-also a trackingUser is created.
+The container automatically includes /resources/sql/create.sql, and creates the database and tables. 
+Also a trackingUser is created.
 
 The docker-compose file is located in the build folder under /libs together with the generated jar file
 
 ## Error logging
 The errors are output directly to the console in "debug_mode". 
 If the "debug_mode" is off, then they are written to a log file. 
-You can find the log file under ./log/errors.txt
+You can find the log file under "./log/errors.txt"
 You can set the "debug_mode" in the application.yml to true or false.
 
 ```yaml
