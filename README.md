@@ -12,7 +12,39 @@ gradle buildJar
 java -jar ./build/lib/tracking.jar
 ```
 
-## Build a container for MySql
+## Database
+You can set up the database in two ways.
+Either you use mysql locally, in which case you must run the following script, or you start a docker container with docker-compose
+
+### Use MySql local
+
+```sql
+CREATE DATABASE tracking;
+
+CREATE TABLE tracking.projects (
+   id INT UNSIGNED AUTO_INCREMENT NOT NULL,
+   project_name VARCHAR(255) NOT NULL,
+   PRIMARY KEY (id),
+   INDEX idx_id(id),
+   INDEX idx_project_name(project_name)
+) ENGINE=InnoDB;
+
+
+CREATE TABLE tracking.scheduler (
+   id INT UNSIGNED AUTO_INCREMENT NOT NULL,
+   projects_id INT UNSIGNED NOT NULL,
+   start_time TIMESTAMP NOT NULL,
+   stop_time TIMESTAMP NOT NULL,
+   PRIMARY KEY (id),
+   CONSTRAINT fk_project_id FOREIGN KEY (projects_id) REFERENCES tracking.projects (id),
+   INDEX idx_start_stop_time (start_time, stop_time)
+) ENGINE=InnoDB;
+
+CREATE USER 'trackingUser'@'%' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON tracking.* TO 'trackingUser'@'%';
+```
+
+### Build a container for MySql
 The product directory contains a docker-compose.yml.
 If you call it with 
 ```shell
@@ -21,6 +53,8 @@ docker-compose up
 you can start your own docker container for mysql. 
 the container automatically includes /resources/sql/create.sql, and creates the database and tables. 
 also a trackingUser is created.
+
+The docker-compose file is located in the build folder under /libs together with the generated jar file
 
 ## Error logging
 The errors are output directly to the console in "debug_mode". 
