@@ -1,52 +1,30 @@
 plugins {
     id 'java'
+    id 'application'
 }
 
 group 'de.schnittker'
 version '0.2'
 
+mainClassName = 'schnittker.tracking.TrackingApplication'
+
 repositories {
     mavenCentral()
 }
 
-sourceSets {
-    main {
-        java {
-            srcDirs = ['src']
-        }
-    }
-
-    test {
-        java {
-            srcDirs = ['test']
-        }
-    }
-}
-
 jar {
-    into 'resources', {
-        from 'resources'
-    }
+  manifest {
+    attributes(
+      'Main-Class': project.mainClassName
+    )
+  }
+
+  from { 
+    configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } 
+  }
 }
 
-task buildJar(type: Jar) {
-    sourceSets {
-        main {
-            resources {
-                srcDirs "src/main/resources"
-            }
-        }
-    }
-
-    manifest {
-        attributes 'Main-Class': 'main.java.TrackingApplication'
-    }
-    baseName = 'tracking'
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    with jar
-}
-
-task copyDockerComposeToBuildDir(type:Copy,dependsOn:[buildJar]) {
+task copyDockerComposeToBuildDir(type:Copy,dependsOn:[jar]) {
     copy {
         from "./docker-compose.yml"
         into "${buildDir}/libs"
@@ -56,7 +34,7 @@ task copyDockerComposeToBuildDir(type:Copy,dependsOn:[buildJar]) {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
-    compile 'mysql:mysql-connector-java:6.0.+'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.+'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
     compile group: 'org.apache.commons', name: 'commons-csv', version: '1.8'
     compile group: 'org.jfree', name: 'jfreechart', version: '1.5.0'
