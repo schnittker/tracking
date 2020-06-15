@@ -26,11 +26,11 @@ import static schnittker.tracking.utils.TimeUtils.computeHours;
 
 public class CsvService {
     private final ResourceBundle translations;
-    private final ExceptionLoggerService exceptionLoggerService;
+    private final ExceptionLoggingService exceptionLoggingService;
 
     public CsvService() {
         translations = ResourceBundle.getBundle("i18n.Messages", Locale.getDefault());
-        exceptionLoggerService = new ExceptionLoggerService();
+        exceptionLoggingService = new ExceptionLoggingService();
     }
 
     public void exportAsFile(List<SchedulerModel> schedulerModelList) {
@@ -45,7 +45,7 @@ public class CsvService {
             writeFooter(schedulerModelList, csvPrinter);
             csvPrinter.flush();
         } catch (IOException e) {
-            exceptionLoggerService.logging(this.getClass().getName(), e.getMessage());
+            exceptionLoggingService.logging(this.getClass().getName(), e.getMessage());
         }
     }
 

@@ -2,7 +2,7 @@ package schnittker.tracking.endpoints;
 
 import schnittker.tracking.helper.Database;
 import schnittker.tracking.models.SchedulerModel;
-import schnittker.tracking.services.ExceptionLoggerService;
+import schnittker.tracking.services.ExceptionLoggingService;
 import schnittker.tracking.utils.TimeUtils;
 
 import javax.swing.table.DefaultTableModel;
@@ -22,12 +22,12 @@ import java.util.ResourceBundle;
  */
 public class SchedulerEndpoint {
     private final Connection connection;
-    private final ExceptionLoggerService exceptionLoggerService;
+    private final ExceptionLoggingService exceptionLoggingService;
     private final ResourceBundle translations;
 
     public SchedulerEndpoint() {
         connection = Database.getConnection();
-        exceptionLoggerService = new ExceptionLoggerService();
+        exceptionLoggingService = new ExceptionLoggingService();
         translations = ResourceBundle.getBundle("i18n.Messages", Locale.getDefault());
     }
 
@@ -46,7 +46,7 @@ public class SchedulerEndpoint {
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            exceptionLoggerService.logging(this.getClass().getName(), e.getMessage());
+            exceptionLoggingService.logging(this.getClass().getName(), e.getMessage());
         }
     }
 
@@ -72,7 +72,7 @@ public class SchedulerEndpoint {
             }
 
         } catch (SQLException e) {
-            exceptionLoggerService.logging(this.getClass().getName(), e.getMessage());
+            exceptionLoggingService.logging(this.getClass().getName(), e.getMessage());
         }
 
         return schedulerModelList;
@@ -110,7 +110,7 @@ public class SchedulerEndpoint {
             }
 
         } catch (SQLException e) {
-            exceptionLoggerService.logging(this.getClass().getName(), e.getMessage());
+            exceptionLoggingService.logging(this.getClass().getName(), e.getMessage());
         }
 
         return defaultTableModel;
@@ -149,7 +149,7 @@ public class SchedulerEndpoint {
             }
 
         } catch (SQLException e) {
-            exceptionLoggerService.logging(this.getClass().getName(), e.getMessage());
+            exceptionLoggingService.logging(this.getClass().getName(), e.getMessage());
         }
 
         return defaultTableModel;

@@ -13,10 +13,10 @@ import java.util.logging.Logger;
 /**
  * @author markus schnittker
  */
-public class ExceptionLoggerService {
+public class ExceptionLoggingService {
     private final Properties properties;
 
-    public ExceptionLoggerService() {
+    public ExceptionLoggingService() {
         properties = new PropertiesLoader().loadProperties("application.properties");
     }
 
