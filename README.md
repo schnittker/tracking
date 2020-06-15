@@ -11,7 +11,7 @@ The first time, "docker-compose up" must be run once to create the container tog
 For this you have to change to the project directory and execute the following commands : 
 ```bash
 docker-compose up
-gradle clean && gradle buildJar
+gradle clean && gradle jar
 ```
 
 Now you can start the program with the following command :
