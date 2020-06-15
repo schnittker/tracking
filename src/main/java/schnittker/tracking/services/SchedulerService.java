@@ -21,7 +21,7 @@ public class SchedulerService {
     private final ResourceBundle translations;
     private final SchedulerEndpoint schedulerEndpoint;
     private final CsvService csvService;
-    private final ExceptionService exceptionService;
+    private final ExceptionLoggerService exceptionLoggerService;
     private final ProjectService projectService;
 
     private static List<SchedulerThread> schedulerThreadList = new ArrayList<>();
@@ -30,7 +30,7 @@ public class SchedulerService {
         translations = ResourceBundle.getBundle("i18n.Messages", Locale.getDefault());
         schedulerEndpoint = new SchedulerEndpoint();
         csvService = new CsvService();
-        exceptionService = new ExceptionService();
+        exceptionLoggerService = new ExceptionLoggerService();
         projectService = new ProjectService();
     }
 

@@ -1,6 +1,6 @@
 package schnittker.tracking.helper;
 
-import schnittker.tracking.services.ExceptionService;
+import schnittker.tracking.services.ExceptionLoggerService;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -22,8 +22,8 @@ public final class Database {
 
             return DriverManager.getConnection(url + database + parameters, user, password);
         } catch (SQLException | NullPointerException e) {
-            ExceptionService exceptionService = new ExceptionService();
-            exceptionService.logging("Database", e.getMessage());
+            ExceptionLoggerService exceptionLoggerService = new ExceptionLoggerService();
+            exceptionLoggerService.logging("Database", e.getMessage());
         }
 
         return null;

@@ -1,7 +1,7 @@
 package schnittker.tracking.endpoints;
 
 import schnittker.tracking.helper.Database;
-import schnittker.tracking.services.ExceptionService;
+import schnittker.tracking.services.ExceptionLoggerService;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,11 +15,11 @@ import java.util.List;
  */
 public class ProjectsEndpoint {
     private final Connection connection;
-    private final ExceptionService exceptionService;
+    private final ExceptionLoggerService exceptionLoggerService;
 
     public ProjectsEndpoint() {
         connection = Database.getConnection();
-        exceptionService = new ExceptionService();
+        exceptionLoggerService = new ExceptionLoggerService();
     }
 
     public void addNewProject(String projectName) {
@@ -31,7 +31,7 @@ public class ProjectsEndpoint {
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            exceptionService.logging(this.getClass().getName(), e.getMessage());
+            exceptionLoggerService.logging(this.getClass().getName(), e.getMessage());
         }
     }
 
@@ -49,7 +49,7 @@ public class ProjectsEndpoint {
             }
 
         } catch (SQLException e) {
-            exceptionService.logging(this.getClass().getName(), e.getMessage());
+            exceptionLoggerService.logging(this.getClass().getName(), e.getMessage());
         }
 
         return projectList;
@@ -64,7 +64,7 @@ public class ProjectsEndpoint {
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            exceptionService.logging(this.getClass().getName(), e.getMessage());
+            exceptionLoggerService.logging(this.getClass().getName(), e.getMessage());
         }
     }
 
@@ -81,7 +81,7 @@ public class ProjectsEndpoint {
             }
 
         } catch (SQLException e) {
-            exceptionService.logging(this.getClass().getName(), e.getMessage());
+            exceptionLoggerService.logging(this.getClass().getName(), e.getMessage());
         }
 
         return "";
