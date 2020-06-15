@@ -58,7 +58,7 @@ If you call it with
 docker-compose up
 ```
 you can start your own docker container for mysql. 
-The container automatically includes /resources/sql/create.sql, and creates the database and tables. 
+The container automatically includes /resources/sql/tracking.sql, and creates the database and tables. 
 Also a trackingUser is created.
 
 The docker-compose file is located in the build folder under /libs together with the generated jar file

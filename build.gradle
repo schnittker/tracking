@@ -24,11 +24,17 @@ jar {
   }
 }
 
-task copyDockerComposeToBuildDir(type:Copy,dependsOn:[jar]) {
+task copyDockerComposeFilesToBuildDir(type:Copy,dependsOn:[jar]) {
     copy {
         from "./docker-compose.yml"
         into "${buildDir}/libs"
     }
+
+    copy {
+        from "./sql"
+        into "${buildDir}/libs/sql"
+    }
+
 }
 
 dependencies {
