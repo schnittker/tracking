@@ -14,22 +14,19 @@ import java.util.List;
  * @author markus schnittker
  */
 public class ProjectsEndpoint {
-    private final Connection connection;
     private final ExceptionLoggingService exceptionLoggingService;
 
     public ProjectsEndpoint() {
-        connection = Database.getConnection();
         exceptionLoggingService = new ExceptionLoggingService();
     }
 
     public void addNewProject(String projectName) {
-        try {
+        try(Connection connection = Database.getConnection()) {
             String sql = "INSERT INTO projects (project_name) VALUES(?)";
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, projectName);
             preparedStatement.executeUpdate();
-
         } catch (SQLException e) {
             exceptionLoggingService.logging(this.getClass().getName(), e.getMessage());
         }
@@ -38,7 +35,7 @@ public class ProjectsEndpoint {
     public List<String> getForProjectTree() {
         List<String> projectList = new ArrayList<>();
 
-        try {
+        try(Connection connection = Database.getConnection()) {
             String sql = "SELECT project_name FROM projects ORDER BY id";
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -47,7 +44,6 @@ public class ProjectsEndpoint {
             while(resultSet.next()) {
                 projectList.add(resultSet.getString(1));
             }
-
         } catch (SQLException e) {
             exceptionLoggingService.logging(this.getClass().getName(), e.getMessage());
         }
@@ -56,20 +52,19 @@ public class ProjectsEndpoint {
     }
 
     public void removeById(Integer projectId) {
-        try {
+        try(Connection connection = Database.getConnection()) {
             String sql = "DELETE FROM projects WHERE id = ?";
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, projectId);
             preparedStatement.executeUpdate();
-
         } catch (SQLException e) {
             exceptionLoggingService.logging(this.getClass().getName(), e.getMessage());
         }
     }
 
     public String getProjectNameById(int projectsId) {
-        try {
+        try(Connection connection = Database.getConnection()) {
             String sql = "SELECT project_name FROM projects WHERE id = ?";
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -79,7 +74,6 @@ public class ProjectsEndpoint {
             if(resultSet.next()) {
                 return resultSet.getString(1);
             }
-
         } catch (SQLException e) {
             exceptionLoggingService.logging(this.getClass().getName(), e.getMessage());
         }

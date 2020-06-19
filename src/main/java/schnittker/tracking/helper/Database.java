@@ -10,7 +10,9 @@ import java.util.Properties;
 /**
  * @author markus schnittker
  */
-public final class Database {
+public final class Database implements AutoCloseable{
+    private static Connection connection;
+
     public static Connection getConnection() {
         try {
             Properties properties = new PropertiesLoader().loadProperties("database.properties");
@@ -20,12 +22,18 @@ public final class Database {
             String user = properties.getProperty("user");
             String password = properties.getProperty("password");
 
-            return DriverManager.getConnection(url + database + parameters, user, password);
+            connection = DriverManager.getConnection(url + database + parameters, user, password);
+            return connection;
         } catch (SQLException | NullPointerException e) {
             ExceptionLoggingService exceptionLoggingService = new ExceptionLoggingService();
             exceptionLoggingService.logging("Database", e.getMessage());
         }
 
         return null;
+    }
+
+    @Override
+    public void close() throws Exception {
+        connection.close();
     }
 }

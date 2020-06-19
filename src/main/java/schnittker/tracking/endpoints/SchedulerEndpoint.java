@@ -21,12 +21,10 @@ import java.util.ResourceBundle;
  * @author markus schnittker
  */
 public class SchedulerEndpoint {
-    private final Connection connection;
     private final ExceptionLoggingService exceptionLoggingService;
     private final ResourceBundle translations;
 
     public SchedulerEndpoint() {
-        connection = Database.getConnection();
         exceptionLoggingService = new ExceptionLoggingService();
         translations = ResourceBundle.getBundle("i18n.Messages", Locale.getDefault());
     }
@@ -36,7 +34,7 @@ public class SchedulerEndpoint {
     }
 
     public void insert(int projectsId, LocalDateTime startTime, LocalDateTime stopTime) {
-        try {
+        try(Connection connection = Database.getConnection()) {
             String sql = "INSERT INTO scheduler (projects_id, start_time, stop_time) VALUES(?,?,?)";
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -44,7 +42,6 @@ public class SchedulerEndpoint {
             preparedStatement.setTimestamp(2, Timestamp.valueOf(startTime));
             preparedStatement.setTimestamp(3, Timestamp.valueOf(stopTime));
             preparedStatement.executeUpdate();
-
         } catch (SQLException e) {
             exceptionLoggingService.logging(this.getClass().getName(), e.getMessage());
         }
@@ -53,7 +50,7 @@ public class SchedulerEndpoint {
     public List<SchedulerModel> getByDateRangeForExport(LocalDateTime from, LocalDateTime to) {
         List<SchedulerModel> schedulerModelList = new ArrayList<>();
 
-        try {
+        try(Connection connection = Database.getConnection()) {
             String sql = "SELECT * FROM scheduler INNER JOIN projects ON scheduler.projects_id = projects.id " +
                     "WHERE scheduler.start_time >= ? AND scheduler.stop_time <= ? ORDER BY scheduler.id";
 
@@ -70,7 +67,6 @@ public class SchedulerEndpoint {
 
                 schedulerModelList.add(schedulerModel);
             }
-
         } catch (SQLException e) {
             exceptionLoggingService.logging(this.getClass().getName(), e.getMessage());
         }
@@ -84,7 +80,7 @@ public class SchedulerEndpoint {
                 translations.getString("header_hours")};
         DefaultTableModel defaultTableModel = new DefaultTableModel(headline, 0);
 
-        try {
+        try(Connection connection = Database.getConnection()) {
             String sql = "SELECT * FROM scheduler INNER JOIN projects ON scheduler.projects_id = projects.id " +
                     "WHERE scheduler.start_time >= ? AND scheduler.stop_time <= ? ORDER BY scheduler.id";
 
@@ -108,7 +104,6 @@ public class SchedulerEndpoint {
 
                 defaultTableModel.addRow(columns);
             }
-
         } catch (SQLException e) {
             exceptionLoggingService.logging(this.getClass().getName(), e.getMessage());
         }
@@ -122,7 +117,7 @@ public class SchedulerEndpoint {
                 translations.getString("header_hours")};
         DefaultTableModel defaultTableModel = new DefaultTableModel(headline, 0);
 
-        try {
+        try(Connection connection = Database.getConnection()) {
             String sql = "SELECT * FROM scheduler INNER JOIN projects ON scheduler.projects_id = projects.id " +
                     "WHERE scheduler.projects_id = ? AND scheduler.start_time >= ? AND scheduler.stop_time <= ? ORDER BY scheduler.id";
 
