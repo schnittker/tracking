@@ -1,11 +1,11 @@
 package schnittker.tracking.services;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import schnittker.tracking.TrackingApplication;
 import schnittker.tracking.helper.PropertiesLoader;
 import schnittker.tracking.models.SchedulerModel;
 import schnittker.tracking.utils.TimeUtils;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVPrinter;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 import static schnittker.tracking.utils.TimeUtils.computeHours;
 
@@ -25,12 +26,11 @@ import static schnittker.tracking.utils.TimeUtils.computeHours;
  */
 
 public class CsvService {
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
     private final ResourceBundle translations;
-    private final ExceptionLoggingService exceptionLoggingService;
 
     public CsvService() {
         translations = ResourceBundle.getBundle("i18n.Messages", Locale.getDefault());
-        exceptionLoggingService = new ExceptionLoggingService();
     }
 
     public void exportAsFile(List<SchedulerModel> schedulerModelList) {
@@ -45,7 +45,7 @@ public class CsvService {
             writeFooter(schedulerModelList, csvPrinter);
             csvPrinter.flush();
         } catch (IOException e) {
-            exceptionLoggingService.logging(this.getClass().getName(), e.getMessage());
+            logger.warning(e.getMessage());
         }
     }
 

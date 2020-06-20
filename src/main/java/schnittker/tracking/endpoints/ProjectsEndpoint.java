@@ -1,24 +1,21 @@
 package schnittker.tracking.endpoints;
 
 import schnittker.tracking.helper.Database;
-import schnittker.tracking.services.ExceptionLoggingService;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * @author markus schnittker
  */
 public class ProjectsEndpoint {
-    private final ExceptionLoggingService exceptionLoggingService;
-
-    public ProjectsEndpoint() {
-        exceptionLoggingService = new ExceptionLoggingService();
-    }
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     public void addNewProject(String projectName) {
         try(Connection connection = Database.getConnection()) {
@@ -28,7 +25,7 @@ public class ProjectsEndpoint {
             preparedStatement.setString(1, projectName);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            exceptionLoggingService.logging(this.getClass().getName(), e.getMessage());
+            logger.warning(e.getMessage());
         }
     }
 
@@ -44,8 +41,9 @@ public class ProjectsEndpoint {
             while(resultSet.next()) {
                 projectList.add(resultSet.getString(1));
             }
-        } catch (SQLException e) {
-            exceptionLoggingService.logging(this.getClass().getName(), e.getMessage());
+        } catch (Exception e) {
+            logger.warning(e.getMessage());
+            return Collections.emptyList();
         }
 
         return projectList;
@@ -59,7 +57,7 @@ public class ProjectsEndpoint {
             preparedStatement.setInt(1, projectId);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            exceptionLoggingService.logging(this.getClass().getName(), e.getMessage());
+            logger.warning(e.getMessage());
         }
     }
 
@@ -75,7 +73,8 @@ public class ProjectsEndpoint {
                 return resultSet.getString(1);
             }
         } catch (SQLException e) {
-            exceptionLoggingService.logging(this.getClass().getName(), e.getMessage());
+            logger.warning(e.getMessage());
+            return "";
         }
 
         return "";

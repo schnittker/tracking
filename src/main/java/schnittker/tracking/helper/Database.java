@@ -1,11 +1,10 @@
 package schnittker.tracking.helper;
 
-import schnittker.tracking.services.ExceptionLoggingService;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 /**
  * @author markus schnittker
@@ -25,8 +24,7 @@ public final class Database implements AutoCloseable{
             connection = DriverManager.getConnection(url + database + parameters, user, password);
             return connection;
         } catch (SQLException | NullPointerException e) {
-            ExceptionLoggingService exceptionLoggingService = new ExceptionLoggingService();
-            exceptionLoggingService.logging("Database", e.getMessage());
+            Logger.getLogger("Database").warning(e.getMessage());
         }
 
         return null;

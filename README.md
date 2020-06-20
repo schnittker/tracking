@@ -63,17 +63,6 @@ Also a trackingUser is created.
 
 The docker-compose file is located in the build folder under /libs together with the generated jar file
 
-## Error logging
-The errors are output directly to the console in "debug_mode". 
-If the "debug_mode" is off, then they are written to a log file. 
-You can find the log file under "./log/errors.txt"
-You can set the "debug_mode" in the application.yml to true or false.
-
-```yaml
-debug_file_path=./logs/errors.txt
-debug_mode=false
-```
-
 ## Multilingual
 You can add new translations to the folder :
 ./resources/i18n

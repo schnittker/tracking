@@ -2,7 +2,6 @@ package schnittker.tracking.endpoints;
 
 import schnittker.tracking.helper.Database;
 import schnittker.tracking.models.SchedulerModel;
-import schnittker.tracking.services.ExceptionLoggingService;
 import schnittker.tracking.utils.TimeUtils;
 
 import javax.swing.table.DefaultTableModel;
@@ -13,19 +12,20 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 /**
  * @author markus schnittker
  */
 public class SchedulerEndpoint {
-    private final ExceptionLoggingService exceptionLoggingService;
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
     private final ResourceBundle translations;
 
     public SchedulerEndpoint() {
-        exceptionLoggingService = new ExceptionLoggingService();
         translations = ResourceBundle.getBundle("i18n.Messages", Locale.getDefault());
     }
 
@@ -43,7 +43,7 @@ public class SchedulerEndpoint {
             preparedStatement.setTimestamp(3, Timestamp.valueOf(stopTime));
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            exceptionLoggingService.logging(this.getClass().getName(), e.getMessage());
+            logger.warning(e.getMessage());
         }
     }
 
@@ -68,7 +68,8 @@ public class SchedulerEndpoint {
                 schedulerModelList.add(schedulerModel);
             }
         } catch (SQLException e) {
-            exceptionLoggingService.logging(this.getClass().getName(), e.getMessage());
+            logger.warning(e.getMessage());
+            return Collections.emptyList();
         }
 
         return schedulerModelList;
@@ -104,8 +105,9 @@ public class SchedulerEndpoint {
 
                 defaultTableModel.addRow(columns);
             }
-        } catch (SQLException e) {
-            exceptionLoggingService.logging(this.getClass().getName(), e.getMessage());
+        } catch (Exception e) {
+            logger.warning(e.getMessage());
+            return new DefaultTableModel();
         }
 
         return defaultTableModel;
@@ -144,7 +146,8 @@ public class SchedulerEndpoint {
             }
 
         } catch (SQLException e) {
-            exceptionLoggingService.logging(this.getClass().getName(), e.getMessage());
+            logger.warning(e.getMessage());
+            return new DefaultTableModel();
         }
 
         return defaultTableModel;
