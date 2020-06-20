@@ -1,5 +1,7 @@
 package schnittker.tracking.helper;
 
+import com.mysql.cj.jdbc.MysqlDataSource;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -15,13 +17,16 @@ public final class Database implements AutoCloseable{
     public static Connection getConnection() {
         try {
             Properties properties = new PropertiesLoader().loadProperties("database.properties");
-            String url = properties.getProperty("url");
             String database = properties.getProperty("database");
-            String parameters = properties.getProperty("parameters");
             String user = properties.getProperty("user");
             String password = properties.getProperty("password");
 
-            connection = DriverManager.getConnection(url + database + parameters, user, password);
+            MysqlDataSource dataSource = new MysqlDataSource();
+            dataSource.setUser(user);
+            dataSource.setPassword(password);
+            dataSource.setDatabaseName(database);
+
+            connection = dataSource.getConnection();
             return connection;
         } catch (SQLException | NullPointerException e) {
             Logger.getLogger("Database").warning(e.getMessage());
