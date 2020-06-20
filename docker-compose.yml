@@ -5,7 +5,7 @@ services:
     image: mariadb:10.2
     container_name: tracker_mariadb
     ports:
-      - 3306:3306
+      - 3307:3306
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
     volumes:

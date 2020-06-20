@@ -3,7 +3,6 @@ package schnittker.tracking.helper;
 import com.mysql.cj.jdbc.MysqlDataSource;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 import java.util.logging.Logger;
@@ -20,11 +19,13 @@ public final class Database implements AutoCloseable{
             String database = properties.getProperty("database");
             String user = properties.getProperty("user");
             String password = properties.getProperty("password");
+            int port = Integer.parseInt(properties.getProperty("port"));
 
             MysqlDataSource dataSource = new MysqlDataSource();
             dataSource.setUser(user);
             dataSource.setPassword(password);
             dataSource.setDatabaseName(database);
+            dataSource.setPortNumber(port);
 
             connection = dataSource.getConnection();
             return connection;
