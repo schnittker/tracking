@@ -24,6 +24,7 @@ public class ProjectsEndpoint {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, projectName);
             preparedStatement.executeUpdate();
+            preparedStatement.close();
         } catch (SQLException e) {
             logger.warning(e.getMessage());
         }
@@ -41,6 +42,9 @@ public class ProjectsEndpoint {
             while(resultSet.next()) {
                 projectList.add(resultSet.getString(1));
             }
+
+            resultSet.close();
+            preparedStatement.close();
         } catch (Exception e) {
             logger.warning(e.getMessage());
             return Collections.emptyList();
@@ -56,6 +60,7 @@ public class ProjectsEndpoint {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, projectId);
             preparedStatement.executeUpdate();
+            preparedStatement.close();
         } catch (SQLException e) {
             logger.warning(e.getMessage());
         }
@@ -72,6 +77,9 @@ public class ProjectsEndpoint {
             if(resultSet.next()) {
                 return resultSet.getString(1);
             }
+
+            resultSet.close();
+            preparedStatement.close();
         } catch (SQLException e) {
             logger.warning(e.getMessage());
             return "";

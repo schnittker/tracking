@@ -42,6 +42,7 @@ public class SchedulerEndpoint {
             preparedStatement.setTimestamp(2, Timestamp.valueOf(startTime));
             preparedStatement.setTimestamp(3, Timestamp.valueOf(stopTime));
             preparedStatement.executeUpdate();
+            preparedStatement.close();
         } catch (SQLException e) {
             logger.warning(e.getMessage());
         }
@@ -67,6 +68,9 @@ public class SchedulerEndpoint {
 
                 schedulerModelList.add(schedulerModel);
             }
+
+            resultSet.close();
+            preparedStatement.close();
         } catch (SQLException e) {
             logger.warning(e.getMessage());
             return Collections.emptyList();
@@ -103,6 +107,8 @@ public class SchedulerEndpoint {
                         hours
                 };
 
+                resultSet.close();
+                preparedStatement.close();
                 defaultTableModel.addRow(columns);
             }
         } catch (Exception e) {
@@ -142,6 +148,8 @@ public class SchedulerEndpoint {
                         hours
                 };
 
+                resultSet.close();
+                preparedStatement.close();
                 defaultTableModel.addRow(columns);
             }
 
