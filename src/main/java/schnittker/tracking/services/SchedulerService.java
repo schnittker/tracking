@@ -32,9 +32,8 @@ public class SchedulerService {
         projectService = new ProjectService();
     }
 
-    public void start(int projectsId) {
-        String projectName = projectService.getProjectNameById(projectsId);
-        SchedulerThread schedulerThread = new SchedulerThread(projectsId, projectName, LocalDateTime.now());
+    public void start(String projectName) {
+        SchedulerThread schedulerThread = new SchedulerThread(projectName, LocalDateTime.now());
         schedulerThread.start();
         schedulerThreadList.add(schedulerThread);
         System.out.println(schedulerThreadList);

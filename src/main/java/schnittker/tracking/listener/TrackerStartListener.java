@@ -20,9 +20,9 @@ public class TrackerStartListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Integer projectsId = TrackingApplication.projectList.getSelectedProject();
-        if(Objects.nonNull(projectsId)) {
-            schedulerService.start(projectsId.intValue());
+        String projectName = TrackingApplication.projectList.getSelectedProjectName();
+        if(Objects.nonNull(projectName)) {
+            schedulerService.start(projectName);
             TrackingApplication.statusBar.setMessage(translations.getString("start_tracking"));
         } else {
             TrackingApplication.statusBar.setMessage(translations.getString("no_selected_project"));

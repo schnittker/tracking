@@ -20,7 +20,7 @@ public class TrackerStopListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Integer projectsId = TrackingApplication.projectList.getSelectedProject();
+        Integer projectsId = TrackingApplication.projectList.getSelectedProjectPosition();
         if(Objects.nonNull(projectsId)) {
             schedulerService.stop(projectsId.intValue());
             TrackingApplication.statusBar.setMessage(translations.getString("stop_tracking"));

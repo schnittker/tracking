@@ -33,7 +33,7 @@ public class TableView {
         return schedulerTable;
     }
 
-    public void getTableByProjectsId(Integer projectsId) {
+    public void getTableByProjectsPosition(Integer projectsId) {
         Month month = TimeUtils.getCurrentMonth();
         LocalDateTime firstDateTimeOfMonth = TimeUtils.getFirstDateOfMonth(month.getValue());
         LocalDateTime lastDateTimeOfMonth = TimeUtils.getLastDateOfMonth(month.getValue());

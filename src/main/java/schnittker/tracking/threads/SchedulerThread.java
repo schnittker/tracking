@@ -21,23 +21,17 @@ public class SchedulerThread extends Thread{
     private final ResourceBundle translations;
 
     private Timer timer;
-    private int projectsId;
     private String projectName;
     private LocalDateTime startTime;
 
-    public SchedulerThread(int projectsId, String projectName, LocalDateTime startTime) {
+    public SchedulerThread(String projectName, LocalDateTime startTime) {
         translations = ResourceBundle.getBundle("i18n.Messages", Locale.getDefault());
-        this.projectsId = projectsId;
         this.projectName = projectName;
         this.startTime = startTime;
     }
 
     public void run() {
         createStatusMessage();
-    }
-
-    public int getProjectsId() {
-        return projectsId;
     }
 
     public LocalDateTime getStartTime() {

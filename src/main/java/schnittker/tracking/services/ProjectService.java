@@ -11,19 +11,15 @@ public class ProjectService {
         projectsEndpoint = new ProjectsEndpoint();
     }
 
-    public String getProjectNameById(int projectsId) {
-        return projectsEndpoint.getProjectNameById(projectsId);
-    }
-
     public List<String> getForProjectTree() {
-        return projectsEndpoint.getForProjectTree();
+        return projectsEndpoint.getListForProjectTree();
     }
 
     public void addNewProject(String projectName) {
         projectsEndpoint.addNewProject(projectName);
     }
 
-    public void removeProjectById(Integer selectedProject) {
-        projectsEndpoint.removeById(selectedProject);
+    public void removeProjectByName(String projectName) {
+        projectsEndpoint.removeByName(projectName);
     }
 }

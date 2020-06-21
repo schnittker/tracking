@@ -23,7 +23,8 @@ public class ProjectList {
     private JTree projectTree;
     private DefaultMutableTreeNode root;
 
-    private Integer selectedProject;
+    private Integer selectedProjectPosition;
+    private String selectedProjectName;
 
     public ProjectList() {
         projectService = new ProjectService();
@@ -39,8 +40,9 @@ public class ProjectList {
             public void mouseClicked(MouseEvent mouseEvent) {
                 TreePath treePath = projectTree.getPathForLocation(mouseEvent.getX(), mouseEvent.getY());
                 if (treePath != null) {
-                    selectedProject = projectTree.getRowForPath(treePath);
-                    TrackingApplication.tableView.getTableByProjectsId(selectedProject);
+                    selectedProjectPosition = projectTree.getRowForPath(treePath);
+                    selectedProjectName = projectTree.getLeadSelectionPath().getLastPathComponent().toString();
+                    TrackingApplication.tableView.getTableByProjectsPosition(selectedProjectPosition);
                 } else {
                     TrackingApplication.tableView.getRefreshedDefaults();
                 }
@@ -58,19 +60,23 @@ public class ProjectList {
     }
 
     public void removeProject() {
-        if(Objects.isNull(selectedProject)) {
+        if(Objects.isNull(selectedProjectName)) {
             return;
         }
 
         int reply = JOptionPane.showConfirmDialog(null, translations.getString("delete_sure"),
                 translations.getString("delete_project"), JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
-            projectService.removeProjectById(selectedProject);
+            projectService.removeProjectByName(selectedProjectName);
         }
     }
 
-    public Integer getSelectedProject() {
-        return selectedProject;
+    public Integer getSelectedProjectPosition() {
+        return selectedProjectPosition;
+    }
+
+    public String getSelectedProjectName() {
+        return selectedProjectName;
     }
 
     private DefaultMutableTreeNode processHierarchy(List<String> projectList) {

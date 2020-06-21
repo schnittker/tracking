@@ -30,7 +30,20 @@ public class ProjectsEndpoint {
         }
     }
 
-    public List<String> getForProjectTree() {
+    public void removeByName(String projectName) {
+        try(Connection connection = Database.getConnection()) {
+            String sql = "DELETE FROM projects WHERE project_name = ?";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, projectName);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            logger.warning(e.getMessage());
+        }
+    }
+
+    public List<String> getListForProjectTree() {
         List<String> projectList = new ArrayList<>();
 
         try(Connection connection = Database.getConnection()) {
@@ -51,40 +64,5 @@ public class ProjectsEndpoint {
         }
 
         return projectList;
-    }
-
-    public void removeById(Integer projectId) {
-        try(Connection connection = Database.getConnection()) {
-            String sql = "DELETE FROM projects WHERE id = ?";
-
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, projectId);
-            preparedStatement.executeUpdate();
-            preparedStatement.close();
-        } catch (SQLException e) {
-            logger.warning(e.getMessage());
-        }
-    }
-
-    public String getProjectNameById(int projectsId) {
-        try(Connection connection = Database.getConnection()) {
-            String sql = "SELECT project_name FROM projects WHERE id = ?";
-
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, projectsId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            if(resultSet.next()) {
-                return resultSet.getString(1);
-            }
-
-            resultSet.close();
-            preparedStatement.close();
-        } catch (SQLException e) {
-            logger.warning(e.getMessage());
-            return "";
-        }
-
-        return "";
     }
 }
