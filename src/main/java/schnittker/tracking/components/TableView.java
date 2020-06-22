@@ -6,7 +6,9 @@ import schnittker.tracking.utils.TimeUtils;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Month;
 
 /**
@@ -41,6 +43,20 @@ public class TableView {
                 firstDateTimeOfMonth, lastDateTimeOfMonth);
 
         schedulerTable.setModel(byProjectsIdAndDateRange);
+        refresh();
+    }
+
+    public void getTableForDaily() {
+        LocalDate yesterday = LocalDate.now().minusDays(1);
+
+        LocalTime startTime = LocalTime.of(0,0,0);
+        LocalTime stopTime = LocalTime.of(23, 59, 59);
+
+        LocalDateTime yesterdayMorning = LocalDateTime.of(yesterday, startTime);
+        LocalDateTime yesterdayEvening = LocalDateTime.of(yesterday, stopTime);
+        DefaultTableModel byDateRange = schedulerService.getByDateRange(yesterdayMorning, yesterdayEvening);
+
+        schedulerTable.setModel(byDateRange);
         refresh();
     }
 
