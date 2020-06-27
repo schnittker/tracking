@@ -5,6 +5,7 @@ import schnittker.tracking.models.SchedulerModel;
 import schnittker.tracking.threads.SchedulerThread;
 import schnittker.tracking.utils.TimeUtils;
 
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -43,7 +44,13 @@ public class SchedulerService {
     public void stop(int projectsId) {
         SchedulerThread schedulerThread = getSchedulerThreadByProjectsId(projectsId);
         if(Objects.nonNull(schedulerThread)) {
-            SchedulerModel schedulerModel = createSchedulerModel(projectsId, schedulerThread.getStartTime(), LocalDateTime.now());
+            String taskDescription = JOptionPane.showInputDialog(null,
+                    translations.getString("project_stop.description"),
+                    translations.getString("project_stop.headline"),
+                    JOptionPane.PLAIN_MESSAGE);
+
+            SchedulerModel schedulerModel = createSchedulerModel(projectsId, schedulerThread.getStartTime(),
+                    LocalDateTime.now(), taskDescription);
             schedulerEndpoint.insert(schedulerModel);
             schedulerThread.getTimer().cancel();
             schedulerThread.interrupt();
@@ -64,12 +71,12 @@ public class SchedulerService {
         return schedulerEndpoint.getByDateRangeForExport(startDateTime, stopDateTime);
     }
 
-    public DefaultTableModel getByProjectsIdAndDateRange(int projectsId, LocalDateTime firstDateTimeOfMonth, LocalDateTime lastDateTimeOfMonth) {
-        return schedulerEndpoint.getByProjectsIdAndDateRange(projectsId, firstDateTimeOfMonth, lastDateTimeOfMonth);
+    public DefaultTableModel getByProjectsIdAndDateRange(int projectsId, LocalDateTime firstDateTime, LocalDateTime lastDateTime) {
+        return schedulerEndpoint.getByProjectsIdAndDateRange(projectsId, firstDateTime, lastDateTime);
     }
 
-    public DefaultTableModel getByDateRange(LocalDateTime firstDateTimeOfMonth, LocalDateTime lastDateTimeOfMonth) {
-        return schedulerEndpoint.getByDateRange(firstDateTimeOfMonth, lastDateTimeOfMonth);
+    public DefaultTableModel getByDateRange(LocalDateTime firstDateTime, LocalDateTime lastDateTime) {
+        return schedulerEndpoint.getByDateRange(firstDateTime, lastDateTime);
     }
 
     private SchedulerThread getSchedulerThreadByProjectsId(int projectsId) {
@@ -87,7 +94,8 @@ public class SchedulerService {
         return curSchedulerThread;
     }
 
-    private SchedulerModel createSchedulerModel(Integer projectsId, LocalDateTime startTime, LocalDateTime stopTime) {
+    private SchedulerModel createSchedulerModel(Integer projectsId, LocalDateTime startTime, LocalDateTime stopTime,
+                                                String taskDescription) {
         if(Objects.isNull(projectsId) || Objects.isNull(startTime) || Objects.isNull(stopTime)) {
             return null;
         }
@@ -96,6 +104,7 @@ public class SchedulerService {
         schedulerModel.setProjectsId(projectsId);
         schedulerModel.setStartTime(startTime);
         schedulerModel.setStopTime(stopTime);
+        schedulerModel.setTask(taskDescription);
 
         return schedulerModel;
     }

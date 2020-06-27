@@ -11,6 +11,7 @@ public class SchedulerModel {
     private String projectName;
     private LocalDateTime startTime;
     private LocalDateTime stopTime;
+    private String task;
 
     public int getId() {
         return id;
@@ -50,5 +51,13 @@ public class SchedulerModel {
 
     public void setStopTime(LocalDateTime stopTime) {
         this.stopTime = stopTime;
+    }
+
+    public String getTask() {
+        return task;
+    }
+
+    public void setTask(String task) {
+        this.task = task;
     }
 }
