@@ -20,5 +20,5 @@ CREATE TABLE tracking.scheduler (
    INDEX idx_start_stop_time (start_time, stop_time)
 ) ENGINE=InnoDB;
 
-CREATE USER 'trackingUser'@'s%' IDENTIFIED BY 'password';
+CREATE USER 'trackingUser'@'%' IDENTIFIED BY 'password';
 GRANT ALL PRIVILEGES ON tracking.* TO 'trackingUser'@'%';
