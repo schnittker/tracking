@@ -81,9 +81,7 @@ public class SchedulerEndpoint {
     }
 
     public DefaultTableModel getByDateRange(LocalDateTime from, LocalDateTime to) {
-        String[] headline = {translations.getString("header_project_name"), translations.getString("header_date"),
-                translations.getString("header_task"), translations.getString("header_start_time"),
-                translations.getString("header_stop_time"), translations.getString("header_hours")};
+        String[] headline = getHeadline();
         DefaultTableModel defaultTableModel = new DefaultTableModel(headline, 0);
 
         try(Connection connection = Database.getConnection()) {
@@ -95,23 +93,10 @@ public class SchedulerEndpoint {
             preparedStatement.setTimestamp(2, Timestamp.valueOf(to));
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            while(resultSet.next()) {
-                LocalDateTime startTime = resultSet.getTimestamp("start_time").toLocalDateTime();
-                LocalDateTime stopTime = resultSet.getTimestamp("stop_time").toLocalDateTime();
-                String hours = TimeUtils.computeHours(startTime, stopTime) + ":" + TimeUtils.computeMinutes(startTime, stopTime);
+            addRows(defaultTableModel, resultSet);
 
-                Object[] columns = {
-                        resultSet.getString("project_name"),
-                        TimeUtils.getFormattedDate(startTime),
-                        TimeUtils.getFormattedTime(startTime),
-                        TimeUtils.getFormattedTime(stopTime),
-                        hours
-                };
-
-                resultSet.close();
-                preparedStatement.close();
-                defaultTableModel.addRow(columns);
-            }
+            resultSet.close();
+            preparedStatement.close();
         } catch (Exception e) {
             logger.warning(e.getMessage());
             return new DefaultTableModel();
@@ -121,9 +106,7 @@ public class SchedulerEndpoint {
     }
 
     public DefaultTableModel getByProjectsIdAndDateRange(int projectsId, LocalDateTime from, LocalDateTime to) {
-        String[] headline = {translations.getString("header_project_name"), translations.getString("header_date"),
-                translations.getString("header_task"), translations.getString("header_start_time"),
-                translations.getString("header_stop_time"), translations.getString("header_hours")};
+        String[] headline = getHeadline();
         DefaultTableModel defaultTableModel = new DefaultTableModel(headline, 0);
 
         try(Connection connection = Database.getConnection()) {
@@ -136,29 +119,40 @@ public class SchedulerEndpoint {
             preparedStatement.setTimestamp(3, Timestamp.valueOf(to));
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            while(resultSet.next()) {
-                LocalDateTime startTime = resultSet.getTimestamp("start_time").toLocalDateTime();
-                LocalDateTime stopTime = resultSet.getTimestamp("stop_time").toLocalDateTime();
-                String hours = TimeUtils.computeHours(startTime, stopTime) + ":" + TimeUtils.computeMinutes(startTime, stopTime);
+            addRows(defaultTableModel, resultSet);
 
-                Object[] columns = {
-                        resultSet.getString("project_name"),
-                        TimeUtils.getFormattedDate(startTime),
-                        TimeUtils.getFormattedTime(startTime),
-                        TimeUtils.getFormattedTime(stopTime),
-                        hours
-                };
-
-                resultSet.close();
-                preparedStatement.close();
-                defaultTableModel.addRow(columns);
-            }
-
+            resultSet.close();
+            preparedStatement.close();
         } catch (SQLException e) {
             logger.warning(e.getMessage());
             return new DefaultTableModel();
         }
 
         return defaultTableModel;
+    }
+
+    private String[] getHeadline() {
+        return new String[] {translations.getString("header_project_name"), translations.getString("header_date"),
+                translations.getString("header_task"), translations.getString("header_start_time"),
+                translations.getString("header_stop_time"), translations.getString("header_hours")};
+    }
+
+    private void addRows(DefaultTableModel defaultTableModel, ResultSet resultSet) throws SQLException {
+        while (resultSet.next()) {
+            LocalDateTime startTime = resultSet.getTimestamp("start_time").toLocalDateTime();
+            LocalDateTime stopTime = resultSet.getTimestamp("stop_time").toLocalDateTime();
+            String hours = TimeUtils.computeHours(startTime, stopTime) + ":" + TimeUtils.computeMinutes(startTime, stopTime);
+
+            Object[] columns = {
+                    resultSet.getString("project_name"),
+                    TimeUtils.getFormattedDate(startTime),
+                    resultSet.getString("task"),
+                    TimeUtils.getFormattedTime(startTime),
+                    TimeUtils.getFormattedTime(stopTime),
+                    hours
+            };
+
+            defaultTableModel.addRow(columns);
+        }
     }
 }
