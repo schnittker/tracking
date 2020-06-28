@@ -31,7 +31,7 @@ public class ProjectList {
     }
 
     public JTree createTree() {
-        List<String> projectList = projectService.getForProjectTree();
+        List<String> projectList = projectService.getProjectsAsList();
         root = processHierarchy(projectList);
         projectTree = new JTree(root);
 
