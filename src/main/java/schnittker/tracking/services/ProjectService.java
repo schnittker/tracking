@@ -15,7 +15,7 @@ public class ProjectService {
         return projectsEndpoint.getProjectNameById(projectsId);
     }
 
-    public List<String> getForProjectTree() {
+    public List<String> getProjectsAsList() {
         return projectsEndpoint.getForProjectTree();
     }
 

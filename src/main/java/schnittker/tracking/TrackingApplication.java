@@ -2,6 +2,7 @@ package schnittker.tracking;
 
 import com.alee.laf.WebLookAndFeel;
 import com.alee.skin.dark.WebDarkSkin;
+import schnittker.tracking.api.Routes;
 import schnittker.tracking.components.MenuBar;
 import schnittker.tracking.components.ProjectList;
 import schnittker.tracking.components.StatusBar;
@@ -46,6 +47,9 @@ public class TrackingApplication {
                 new TrackingApplication().createGui();
             }
         });
+
+        // Bind the api routes
+        new Routes().bind();
     }
 
     private static void setLookAndFeel() {

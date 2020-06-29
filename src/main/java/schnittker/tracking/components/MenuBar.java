@@ -6,6 +6,7 @@ import schnittker.tracking.listener.ExitListener;
 import schnittker.tracking.listener.ExportDialogListener;
 import schnittker.tracking.listener.InfoListener;
 import schnittker.tracking.listener.RemoveProjectListener;
+import schnittker.tracking.listener.ShowPageListener;
 import schnittker.tracking.listener.TrackerStartListener;
 import schnittker.tracking.listener.TrackerStopListener;
 
@@ -31,6 +32,7 @@ public class MenuBar {
     private JMenuItem stopTrackingItem;
     private JMenuItem dailyItem;
     private JMenuItem exportItem;
+    private JMenuItem showPageItem;
     private JMenuItem infoItem;
 
     public MenuBar() {
@@ -52,6 +54,7 @@ public class MenuBar {
         stopTrackingItem = new JMenuItem(translation.getString("menu_bar.menu.scheduler.stop"));
         dailyItem = new JMenuItem(translation.getString("menu_bar.menu.scheduler.daily"));
         exportItem = new JMenuItem(translation.getString("menu_bar.menu.scheduler.export"));
+        showPageItem = new JMenuItem(translation.getString("menu_bar.menu.help.show_page"));
         infoItem = new JMenuItem("?");
 
         fileMenu.add(exitItem);
@@ -63,6 +66,7 @@ public class MenuBar {
         schedulerMenu.add(dailyItem);
         schedulerMenu.addSeparator();
         schedulerMenu.add(exportItem);
+        helpMenu.add(showPageItem);
         helpMenu.add(infoItem);
 
         menuBar.add(fileMenu);
@@ -77,6 +81,7 @@ public class MenuBar {
         dailyItem.addActionListener(new DailyListener());
         exportItem.addActionListener(new ExportDialogListener());
         exitItem.addActionListener(new ExitListener());
+        showPageItem.addActionListener(new ShowPageListener());
         infoItem.addActionListener(new InfoListener());
 
         return menuBar;
