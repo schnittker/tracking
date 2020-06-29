@@ -1,13 +1,17 @@
 package schnittker.tracking.api;
 
 import com.google.gson.Gson;
-import schnittker.tracking.api.response.StandardResponse;
-import schnittker.tracking.enums.StatusResponse;
 import schnittker.tracking.models.SchedulerModel;
 import schnittker.tracking.services.ProjectService;
 import schnittker.tracking.services.SchedulerService;
+import schnittker.tracking.utils.TimeUtils;
 
-import static spark.Spark.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static spark.Spark.delete;
+import static spark.Spark.get;
+import static spark.Spark.post;
 
 /**
  * http://localhost:4567/
@@ -28,45 +32,34 @@ public class Routes {
         // Get all projects
         get("/projects", (request, response) -> {
             response.type("application/json");
-            return new Gson().toJson(
-                    new StandardResponse(StatusResponse.SUCCESS,new Gson()
-                            .toJson(projectService.getProjectsAsList())));
+            return new Gson().toJson(projectService.getProjectsAsList(), ArrayList.class);
         });
 
         // Get scheduler
         get("/scheduler", (request, response) -> {
             response.type("application/json");
-           // return new Gson().toJson(
-             //       new StandardResponse(StatusResponse.SUCCESS,new Gson()
-               //             .toJsonTree(schedulerService.getByDateRange())));
-            return "";
+            final int currentMonth = TimeUtils.getCurrentMonth().getValue();
+            List<SchedulerModel> schedulerModelList = schedulerService.getSchedulerModelList(currentMonth);
+            return new Gson().toJson(schedulerModelList, ArrayList.class);
         });
 
         // Get scheduler by project name
         get("/scheduler/:project", (request, response) -> {
             response.type("application/json");
-            //return new Gson().toJson(
-                   // new StandardResponse(StatusResponse.SUCCESS,new Gson()
-                         //   .toJsonTree(schedulerService.getByProjectsNameAndDateRange(request.params(":project"), LocalDateTime.now(), LocalDateTime.now()))));
-            return "";
+            // todo: implements method
+            return new Gson().toJson("", ArrayList.class);
         });
 
         // Add scheduler
         post("/scheduler/add", (request, response) -> {
-            response.type("application/json");
-            SchedulerModel schedulerModel = new Gson().fromJson(request.body(), SchedulerModel.class);
-            // schedulerService.add(schedulerModel);
-
-            return new Gson()
-                    .toJson(new StandardResponse(StatusResponse.SUCCESS));
+            // todo: implements method
+            return "";
         });
 
         // Remove scheduler
         delete("/scheduler/delete/:id", (request, response) -> {
-            response.type("application/json");
-            // schedulerService.delete(request.params(":id"));
-            return new Gson().toJson(
-                    new StandardResponse(StatusResponse.SUCCESS, ""));
+            // todo: implements method
+            return "";
         });
     }
 }

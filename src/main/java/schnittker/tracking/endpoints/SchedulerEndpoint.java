@@ -64,6 +64,7 @@ public class SchedulerEndpoint {
             while(resultSet.next()) {
                 SchedulerModel schedulerModel = new SchedulerModel();
                 schedulerModel.setProjectName(resultSet.getString("project_name"));
+                schedulerModel.setTask(resultSet.getString("task"));
                 schedulerModel.setStartTime(resultSet.getTimestamp("start_time").toLocalDateTime());
                 schedulerModel.setStopTime(resultSet.getTimestamp("stop_time").toLocalDateTime());
 
