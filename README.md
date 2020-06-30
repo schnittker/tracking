@@ -76,4 +76,6 @@ Currently the program is completely translated into english and german.
 * Docker
 * Apache Commons
 * Apache Commons Csv
+* Apache 
 * jFreechart
+* sparkjava
