@@ -93,24 +93,24 @@ public class SchedulerThread extends Thread{
 
             @Override
             public void run() {
-                if(workingTime > 0) {
+                if(minutes == 0 && workingTime > 0) {
                     minutes += workingTime;
                 }
 
                 int hours = 0;
-                if(minutes > 60) {
+                int calculatedMinutes = minutes;
+                if(minutes >= 60) {
                     hours = minutes / 60;
-                    minutes = minutes - (hours * 60);
+                    calculatedMinutes = minutes - (hours * 60);
                 }
 
-                String minuteString = String.valueOf(minutes);
+                String minuteString = String.valueOf(calculatedMinutes);
                 if(minuteString.length() < 2) {
                     minuteString = "0" + minuteString;
                 }
 
                 TrackingApplication.statusBar.setCountdown("    " + translations.getString("status_bar.working_time.today") + " " + hours + ":" + minuteString);
-
-                minutes++;
+                minutes += 1;
             }
         }, 0, TimeUnit.MINUTES.toMillis(MINUTES));
     }
