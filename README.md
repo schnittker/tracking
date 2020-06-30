@@ -70,6 +70,15 @@ You can add new translations to the folder :
 
 Currently the program is completely translated into english and german. 
 
+## Api
+For the communication with the chrome extension some api routes were created.
+The results are displayed as JSON string.
+### Routes
+```bash
+curl http://localhost:4567/projects
+curl http://localhost:4567/scheduler
+```
+
 ## Other stuff
 ### Frameworks and other technologies
 * MySQL
@@ -78,4 +87,6 @@ Currently the program is completely translated into english and german.
 * Apache Commons Csv
 * Apache 
 * jFreechart
-* sparkjava
+* SparkJava
+* Lombock
+* Slf4j
