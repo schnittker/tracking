@@ -1,15 +1,16 @@
 package schnittker.tracking.helper;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
-import java.util.logging.Logger;
 
 /**
  * @author markus schnittker
  */
+@Slf4j
 public final class Database implements AutoCloseable{
     private static Connection connection;
 
@@ -30,7 +31,7 @@ public final class Database implements AutoCloseable{
             connection = dataSource.getConnection();
             return connection;
         } catch (SQLException | NullPointerException e) {
-            Logger.getLogger("Database").warning(e.getMessage());
+            log.error(e.getMessage());
         }
 
         return null;

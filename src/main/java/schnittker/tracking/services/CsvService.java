@@ -1,5 +1,6 @@
 package schnittker.tracking.services;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import schnittker.tracking.TrackingApplication;
@@ -17,16 +18,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.ResourceBundle;
-import java.util.logging.Logger;
 
 import static schnittker.tracking.utils.TimeUtils.computeHours;
 
 /**
  * @author markus schnittker
  */
-
+@Slf4j
 public class CsvService {
-    private final Logger logger = Logger.getLogger(this.getClass().getName());
     private final ResourceBundle translations;
 
     public CsvService() {
@@ -45,7 +44,7 @@ public class CsvService {
             writeFooter(schedulerModelList, csvPrinter);
             csvPrinter.flush();
         } catch (IOException e) {
-            logger.warning(e.getMessage());
+            log.error(e.getMessage());
         }
     }
 

@@ -1,5 +1,6 @@
 package schnittker.tracking.endpoints;
 
+import lombok.extern.slf4j.Slf4j;
 import schnittker.tracking.helper.Database;
 import schnittker.tracking.models.SchedulerModel;
 import schnittker.tracking.utils.TimeUtils;
@@ -16,13 +17,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.logging.Logger;
 
 /**
  * @author markus schnittker
  */
+@Slf4j
 public class SchedulerEndpoint {
-    private final Logger logger = Logger.getLogger(this.getClass().getName());
     private final ResourceBundle translations;
 
     public SchedulerEndpoint() {
@@ -45,7 +45,7 @@ public class SchedulerEndpoint {
             preparedStatement.executeUpdate();
             preparedStatement.close();
         } catch (SQLException e) {
-            logger.warning(e.getMessage());
+            log.error(e.getMessage());
         }
     }
 
@@ -74,7 +74,7 @@ public class SchedulerEndpoint {
             resultSet.close();
             preparedStatement.close();
         } catch (SQLException e) {
-            logger.warning(e.getMessage());
+            log.error(e.getMessage());
             return Collections.emptyList();
         }
 
@@ -99,7 +99,7 @@ public class SchedulerEndpoint {
             resultSet.close();
             preparedStatement.close();
         } catch (Exception e) {
-            logger.warning(e.getMessage());
+            log.error(e.getMessage());
             return new DefaultTableModel();
         }
 
@@ -125,7 +125,7 @@ public class SchedulerEndpoint {
             resultSet.close();
             preparedStatement.close();
         } catch (SQLException e) {
-            logger.warning(e.getMessage());
+            log.error(e.getMessage());
             return new DefaultTableModel();
         }
 

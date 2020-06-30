@@ -1,5 +1,6 @@
 package schnittker.tracking.endpoints;
 
+import lombok.extern.slf4j.Slf4j;
 import schnittker.tracking.helper.Database;
 
 import java.sql.Connection;
@@ -9,14 +10,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * @author markus schnittker
  */
+@Slf4j
 public class ProjectsEndpoint {
-    private final Logger logger = Logger.getLogger(this.getClass().getName());
-
     public void addNewProject(String projectName) {
         try(Connection connection = Database.getConnection()) {
             String sql = "INSERT INTO projects (project_name) VALUES(?)";
@@ -26,7 +25,7 @@ public class ProjectsEndpoint {
             preparedStatement.executeUpdate();
             preparedStatement.close();
         } catch (SQLException e) {
-            logger.warning(e.getMessage());
+            log.error(e.getMessage());
         }
     }
 
@@ -46,7 +45,7 @@ public class ProjectsEndpoint {
             resultSet.close();
             preparedStatement.close();
         } catch (Exception e) {
-            logger.warning(e.getMessage());
+            log.error(e.getMessage());
             return Collections.emptyList();
         }
 
@@ -62,7 +61,7 @@ public class ProjectsEndpoint {
             preparedStatement.executeUpdate();
             preparedStatement.close();
         } catch (SQLException e) {
-            logger.warning(e.getMessage());
+            log.error(e.getMessage());
         }
     }
 
@@ -81,7 +80,7 @@ public class ProjectsEndpoint {
             resultSet.close();
             preparedStatement.close();
         } catch (SQLException e) {
-            logger.warning(e.getMessage());
+            log.error(e.getMessage());
             return "";
         }
 

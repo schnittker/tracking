@@ -1,6 +1,8 @@
 package schnittker.tracking.api;
 
 import com.google.gson.Gson;
+import org.apache.log4j.PropertyConfigurator;
+import schnittker.tracking.helper.PropertiesLoader;
 import schnittker.tracking.models.SchedulerModel;
 import schnittker.tracking.services.ProjectService;
 import schnittker.tracking.services.SchedulerService;
@@ -8,6 +10,7 @@ import schnittker.tracking.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import static spark.Spark.delete;
 import static spark.Spark.get;
@@ -21,10 +24,14 @@ import static spark.Spark.post;
 public class Routes {
     private final SchedulerService schedulerService;
     private final ProjectService projectService;
+    private final Properties properties;
 
     public Routes() {
         schedulerService = new SchedulerService();
         projectService = new ProjectService();
+        properties = new PropertiesLoader().loadProperties("log4j.properties");
+
+        PropertyConfigurator.configure(properties);
     }
 
     public void bind() {

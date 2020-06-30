@@ -1,5 +1,6 @@
 package schnittker.tracking.services;
 
+import lombok.extern.slf4j.Slf4j;
 import schnittker.tracking.helper.PropertiesLoader;
 
 import javax.mail.Message;
@@ -12,13 +13,16 @@ import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 import java.util.logging.Logger;
 
+/**
+ * For google mail
+ * @see "https://support.google.com/accounts/answer/185833?p=InvalidSecondFactor"
+ */
+@Slf4j
 public class MailService {
     private final Properties properties;
-    private final Logger logger;
 
     public MailService() {
         properties = new PropertiesLoader().loadProperties("mail.properties");
-        logger = Logger.getLogger(this.getClass().getName());
     }
 
     public void send(String subject, String content) {
@@ -41,7 +45,7 @@ public class MailService {
 
             Transport.send(message);
         } catch (MessagingException e) {
-            logger.warning(e.getMessage());
+            log.error(e.getMessage());
         }
     }
 }

@@ -1,13 +1,15 @@
 package schnittker.tracking.helper;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import java.util.logging.Logger;
 
 /**
  * @author markus schnittker
  */
+@Slf4j
 public final class PropertiesLoader {
     public Properties loadProperties(String fileName) {
 
@@ -17,7 +19,7 @@ public final class PropertiesLoader {
             properties.load(inputStream);
             return properties;
         } catch (IOException | NullPointerException e) {
-            Logger.getLogger("PropertiesLoader").severe(e.getMessage());
+            log.error(e.getMessage());
         }
 
         return null;
