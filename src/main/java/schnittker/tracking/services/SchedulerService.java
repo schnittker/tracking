@@ -44,7 +44,7 @@ public class SchedulerService {
         schedulerThread.start();
         schedulerThreadList.add(schedulerThread);
         System.out.println(schedulerThreadList);
-        mailService.send("test", "");
+        //mailService.send("test", "");
     }
 
     public void stop(int projectsId) {
@@ -61,7 +61,7 @@ public class SchedulerService {
             schedulerThread.getStatusTimer().cancel();
             schedulerThread.getCountdownTimer().cancel();
             schedulerThread.interrupt();
-            mailService.send("", "");
+            //mailService.send("", "");
         }
     }
 
