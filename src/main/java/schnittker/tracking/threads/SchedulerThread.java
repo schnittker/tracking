@@ -87,7 +87,7 @@ public class SchedulerThread extends Thread{
 
     private void createCountdown() {
         countdownTimer = new Timer();
-        final int workingTime = getWorkingTime();
+        final int workingTime = schedulerService.getWorkingTime();
         countdownTimer.schedule(new TimerTask() {
             private int minutes = 0;
 
@@ -113,21 +113,5 @@ public class SchedulerThread extends Thread{
                 minutes += 1;
             }
         }, 0, TimeUnit.MINUTES.toMillis(MINUTES));
-    }
-
-    private int getWorkingTime() {
-        LocalDate today = LocalDate.now();
-        LocalTime startTime = LocalTime.of(0,0,1);
-        LocalTime stopTime = LocalTime.of(23,59,59);
-        LocalDateTime firstDateTime = LocalDateTime.of(today, startTime);
-        LocalDateTime lastDateTime = LocalDateTime.of(today, stopTime);
-        final List<SchedulerModel> schedulerModelList = schedulerService.getByDateRangeAsSchedulerModelList(firstDateTime, lastDateTime);
-
-        int minutes = 0;
-        for(SchedulerModel schedulerModel : schedulerModelList) {
-            minutes += ChronoUnit.MINUTES.between(schedulerModel.getStartTime(), schedulerModel.getStopTime());
-        }
-
-        return minutes;
     }
 }

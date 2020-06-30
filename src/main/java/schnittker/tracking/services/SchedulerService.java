@@ -7,7 +7,10 @@ import schnittker.tracking.utils.TimeUtils;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -82,6 +85,22 @@ public class SchedulerService {
 
     public List<SchedulerModel> getByDateRangeAsSchedulerModelList(LocalDateTime firstDateTime, LocalDateTime lastDateTime) {
         return schedulerEndpoint.getByDateRangeAsSchedulerModelList(firstDateTime, lastDateTime);
+    }
+
+    public int getWorkingTime() {
+        LocalDate today = LocalDate.now();
+        LocalTime startTime = LocalTime.of(0,0,1);
+        LocalTime stopTime = LocalTime.of(23,59,59);
+        LocalDateTime firstDateTime = LocalDateTime.of(today, startTime);
+        LocalDateTime lastDateTime = LocalDateTime.of(today, stopTime);
+        final List<SchedulerModel> schedulerModelList = getByDateRangeAsSchedulerModelList(firstDateTime, lastDateTime);
+
+        int minutes = 0;
+        for(SchedulerModel schedulerModel : schedulerModelList) {
+            minutes += ChronoUnit.MINUTES.between(schedulerModel.getStartTime(), schedulerModel.getStopTime());
+        }
+
+        return minutes;
     }
 
     private SchedulerThread getSchedulerThreadByProjectsId(int projectsId) {
