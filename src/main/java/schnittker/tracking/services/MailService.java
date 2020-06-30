@@ -13,15 +13,15 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 public class MailService {
-    private static Properties properties;
-    private static Logger logger;
+    private final Properties properties;
+    private final Logger logger;
 
     public MailService() {
         properties = new PropertiesLoader().loadProperties("mail.properties");
         logger = Logger.getLogger(this.getClass().getName());
     }
 
-    public void send(String subject, String content) throws MessagingException {
+    public void send(String subject, String content) {
         final String fromAddress=properties.getProperty("mail.from_address");
         final String toAddress=properties.getProperty("mail.to_address");
         final String password=properties.getProperty("mail.password");

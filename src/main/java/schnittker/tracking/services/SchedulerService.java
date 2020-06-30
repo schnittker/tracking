@@ -26,6 +26,7 @@ public class SchedulerService {
     private final SchedulerEndpoint schedulerEndpoint;
     private final CsvService csvService;
     private final ProjectService projectService;
+    private final MailService mailService;
 
     private static List<SchedulerThread> schedulerThreadList = new ArrayList<>();
 
@@ -34,6 +35,7 @@ public class SchedulerService {
         schedulerEndpoint = new SchedulerEndpoint();
         csvService = new CsvService();
         projectService = new ProjectService();
+        mailService = new MailService();
     }
 
     public void start(int projectsId) {
@@ -58,6 +60,7 @@ public class SchedulerService {
             schedulerThread.getStatusTimer().cancel();
             schedulerThread.getCountdownTimer().cancel();
             schedulerThread.interrupt();
+            mailService.send("", "");
         }
     }
 
