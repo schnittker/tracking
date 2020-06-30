@@ -2,16 +2,19 @@ package schnittker.tracking;
 
 import com.alee.laf.WebLookAndFeel;
 import com.alee.skin.dark.WebDarkSkin;
+import org.apache.log4j.PropertyConfigurator;
 import schnittker.tracking.api.Routes;
 import schnittker.tracking.components.MenuBar;
 import schnittker.tracking.components.ProjectList;
 import schnittker.tracking.components.StatusBar;
 import schnittker.tracking.components.TableView;
 import schnittker.tracking.components.ToolBar;
+import schnittker.tracking.helper.PropertiesLoader;
 import schnittker.tracking.utils.FrameUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Properties;
 
 /**
  * @author markus schnitter
@@ -25,6 +28,8 @@ public class TrackingApplication {
     public static TableView tableView;
     public static StatusBar statusBar;
 
+    private final Properties properties;
+
     private JFrame frame;
     private JSplitPane mainSplitPane;
     private JPanel mainPanel;
@@ -37,6 +42,9 @@ public class TrackingApplication {
         projectList = new ProjectList();
         tableView = new TableView();
         statusBar =  new StatusBar();
+
+        properties = new PropertiesLoader().loadProperties("log4j.properties");
+        PropertyConfigurator.configure(properties);
     }
 
     public static void main(String... args) {

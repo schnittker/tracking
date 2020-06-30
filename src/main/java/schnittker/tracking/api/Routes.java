@@ -24,14 +24,10 @@ import static spark.Spark.post;
 public class Routes {
     private final SchedulerService schedulerService;
     private final ProjectService projectService;
-    private final Properties properties;
 
     public Routes() {
         schedulerService = new SchedulerService();
         projectService = new ProjectService();
-        properties = new PropertiesLoader().loadProperties("log4j.properties");
-
-        PropertyConfigurator.configure(properties);
     }
 
     public void bind() {
