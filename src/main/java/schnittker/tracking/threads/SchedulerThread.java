@@ -93,9 +93,15 @@ public class SchedulerThread extends Thread{
 
             @Override
             public void run() {
-                minutes += workingTime;
-                int hours = minutes / 60;
-                minutes = minutes - (hours * 60);
+                if(workingTime > 0) {
+                    minutes += workingTime;
+                }
+
+                int hours = 0;
+                if(minutes > 60) {
+                    hours = minutes / 60;
+                    minutes = minutes - (hours * 60);
+                }
 
                 String minuteString = String.valueOf(minutes);
                 if(minuteString.length() < 2) {
