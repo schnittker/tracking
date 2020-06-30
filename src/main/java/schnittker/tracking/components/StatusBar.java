@@ -9,6 +9,7 @@ import java.awt.*;
  */
 public class StatusBar {
     private static JLabel lblStatus;
+    private static JLabel lblCountdown;
     private static JProgressBar progressBar;
 
     private JPanel messagePanel;
@@ -18,6 +19,7 @@ public class StatusBar {
         mainPanel = new JPanel();
         messagePanel = new JPanel();
         lblStatus = new JLabel();
+        lblCountdown = new JLabel();
         progressBar = new JProgressBar();
 
         messagePanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
@@ -28,6 +30,7 @@ public class StatusBar {
 
         mainPanel.setLayout(new BorderLayout());
         mainPanel.add(BorderLayout.WEST, messagePanel);
+        mainPanel.add(BorderLayout.CENTER, lblCountdown);
         mainPanel.add(BorderLayout.EAST, progressBar);
 
         return mainPanel;
@@ -35,6 +38,10 @@ public class StatusBar {
 
     public void setMessage(String msg) {
         lblStatus.setText(msg);
+    }
+
+    public void setCountdown(String msg) {
+        lblCountdown.setText(msg);
     }
 
     public void setProgressBar(int value, int min, int max) {

@@ -52,7 +52,8 @@ public class SchedulerService {
             SchedulerModel schedulerModel = createSchedulerModel(projectsId, schedulerThread.getStartTime(),
                     LocalDateTime.now(), taskDescription);
             schedulerEndpoint.insert(schedulerModel);
-            schedulerThread.getTimer().cancel();
+            schedulerThread.getStatusTimer().cancel();
+            schedulerThread.getCountdownTimer().cancel();
             schedulerThread.interrupt();
         }
     }
@@ -60,7 +61,7 @@ public class SchedulerService {
     public void export(int month) {
         LocalDateTime startDateTime = TimeUtils.getFirstDateOfMonth(month);
         LocalDateTime stopDateTime = TimeUtils.getLastDateOfMonth(month);
-        List<SchedulerModel> schedulerModelList = schedulerEndpoint.getByDateRangeForExport(startDateTime, stopDateTime);
+        List<SchedulerModel> schedulerModelList = schedulerEndpoint.getByDateRangeAsSchedulerModelList(startDateTime, stopDateTime);
         csvService.exportAsFile(schedulerModelList);
     }
 
@@ -68,15 +69,19 @@ public class SchedulerService {
         LocalDateTime startDateTime = TimeUtils.getFirstDateOfMonth(month);
         LocalDateTime stopDateTime = TimeUtils.getLastDateOfMonth(month);
 
-        return schedulerEndpoint.getByDateRangeForExport(startDateTime, stopDateTime);
+        return schedulerEndpoint.getByDateRangeAsSchedulerModelList(startDateTime, stopDateTime);
     }
 
     public DefaultTableModel getByProjectsIdAndDateRange(int projectsId, LocalDateTime firstDateTime, LocalDateTime lastDateTime) {
-        return schedulerEndpoint.getByProjectsIdAndDateRange(projectsId, firstDateTime, lastDateTime);
+        return schedulerEndpoint.getByProjectsIdAndDateRangeAsDefaultTableModel(projectsId, firstDateTime, lastDateTime);
     }
 
-    public DefaultTableModel getByDateRange(LocalDateTime firstDateTime, LocalDateTime lastDateTime) {
-        return schedulerEndpoint.getByDateRange(firstDateTime, lastDateTime);
+    public DefaultTableModel getByDateRangeAsDefaultTableModel(LocalDateTime firstDateTime, LocalDateTime lastDateTime) {
+        return schedulerEndpoint.getByDateRangeAsDefaultTableModel(firstDateTime, lastDateTime);
+    }
+
+    public List<SchedulerModel> getByDateRangeAsSchedulerModelList(LocalDateTime firstDateTime, LocalDateTime lastDateTime) {
+        return schedulerEndpoint.getByDateRangeAsSchedulerModelList(firstDateTime, lastDateTime);
     }
 
     private SchedulerThread getSchedulerThreadByProjectsId(int projectsId) {

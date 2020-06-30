@@ -1,9 +1,15 @@
 package schnittker.tracking.threads;
 
 import schnittker.tracking.TrackingApplication;
+import schnittker.tracking.models.SchedulerModel;
+import schnittker.tracking.services.SchedulerService;
 import schnittker.tracking.utils.TimeUtils;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Timer;
@@ -15,17 +21,21 @@ import java.util.concurrent.TimeUnit;
  */
 public class SchedulerThread extends Thread{
     private static final long SECONDS = 1;
+    private static final long MINUTES = 1;
     private static final int MIN_VALUE = 0;
     private static final int MAX_VALUE = 60;
 
+    private final SchedulerService schedulerService;
     private final ResourceBundle translations;
 
-    private Timer timer;
+    private Timer statusTimer;
+    private Timer countdownTimer;
     private int projectsId;
     private String projectName;
     private LocalDateTime startTime;
 
     public SchedulerThread(int projectsId, String projectName, LocalDateTime startTime) {
+        schedulerService = new SchedulerService();
         translations = ResourceBundle.getBundle("i18n.Messages", Locale.getDefault());
         this.projectsId = projectsId;
         this.projectName = projectName;
@@ -34,6 +44,7 @@ public class SchedulerThread extends Thread{
 
     public void run() {
         createStatusMessage();
+        createCountdown();
     }
 
     public int getProjectsId() {
@@ -44,13 +55,17 @@ public class SchedulerThread extends Thread{
         return startTime;
     }
 
-    public Timer getTimer() {
-        return timer;
+    public Timer getStatusTimer() {
+        return statusTimer;
+    }
+
+    public Timer getCountdownTimer() {
+        return countdownTimer;
     }
 
     private void createStatusMessage() {
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
+        statusTimer = new Timer();
+        statusTimer.schedule(new TimerTask() {
             private int value = 0;
 
             @Override
@@ -68,5 +83,45 @@ public class SchedulerThread extends Thread{
                 }
             }
         }, 0, TimeUnit.SECONDS.toMillis(SECONDS));
+    }
+
+    private void createCountdown() {
+        countdownTimer = new Timer();
+        final int workingTime = getWorkingTime();
+        countdownTimer.schedule(new TimerTask() {
+            private int minutes = 0;
+
+            @Override
+            public void run() {
+                minutes += workingTime;
+                int hours = minutes / 60;
+                minutes = minutes - (hours * 60);
+
+                String minuteString = String.valueOf(minutes);
+                if(minuteString.length() < 2) {
+                    minuteString = "0" + minuteString;
+                }
+
+                TrackingApplication.statusBar.setCountdown("    " + translations.getString("status_bar.working_time.today") + " " + hours + ":" + minuteString);
+
+                minutes++;
+            }
+        }, 0, TimeUnit.MINUTES.toMillis(MINUTES));
+    }
+
+    private int getWorkingTime() {
+        LocalDate today = LocalDate.now();
+        LocalTime startTime = LocalTime.of(0,0,1);
+        LocalTime stopTime = LocalTime.of(23,59,59);
+        LocalDateTime firstDateTime = LocalDateTime.of(today, startTime);
+        LocalDateTime lastDateTime = LocalDateTime.of(today, stopTime);
+        final List<SchedulerModel> schedulerModelList = schedulerService.getByDateRangeAsSchedulerModelList(firstDateTime, lastDateTime);
+
+        int minutes = 0;
+        for(SchedulerModel schedulerModel : schedulerModelList) {
+            minutes += ChronoUnit.MINUTES.between(schedulerModel.getStartTime(), schedulerModel.getStopTime());
+        }
+
+        return minutes;
     }
 }

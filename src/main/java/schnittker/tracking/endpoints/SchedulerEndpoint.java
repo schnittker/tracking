@@ -49,7 +49,7 @@ public class SchedulerEndpoint {
         }
     }
 
-    public List<SchedulerModel> getByDateRangeForExport(LocalDateTime from, LocalDateTime to) {
+    public List<SchedulerModel> getByDateRangeAsSchedulerModelList(LocalDateTime from, LocalDateTime to) {
         List<SchedulerModel> schedulerModelList = new ArrayList<>();
 
         try(Connection connection = Database.getConnection()) {
@@ -81,7 +81,7 @@ public class SchedulerEndpoint {
         return schedulerModelList;
     }
 
-    public DefaultTableModel getByDateRange(LocalDateTime from, LocalDateTime to) {
+    public DefaultTableModel getByDateRangeAsDefaultTableModel(LocalDateTime from, LocalDateTime to) {
         String[] headline = getHeadline();
         DefaultTableModel defaultTableModel = new DefaultTableModel(headline, 0);
 
@@ -106,7 +106,7 @@ public class SchedulerEndpoint {
         return defaultTableModel;
     }
 
-    public DefaultTableModel getByProjectsIdAndDateRange(int projectsId, LocalDateTime from, LocalDateTime to) {
+    public DefaultTableModel getByProjectsIdAndDateRangeAsDefaultTableModel(int projectsId, LocalDateTime from, LocalDateTime to) {
         String[] headline = getHeadline();
         DefaultTableModel defaultTableModel = new DefaultTableModel(headline, 0);
 

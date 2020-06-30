@@ -54,7 +54,7 @@ public class TableView {
 
         LocalDateTime yesterdayMorning = LocalDateTime.of(yesterday, startTime);
         LocalDateTime yesterdayEvening = LocalDateTime.of(yesterday, stopTime);
-        DefaultTableModel byDateRange = schedulerService.getByDateRange(yesterdayMorning, yesterdayEvening);
+        DefaultTableModel byDateRange = schedulerService.getByDateRangeAsDefaultTableModel(yesterdayMorning, yesterdayEvening);
 
         schedulerTable.setModel(byDateRange);
         refresh();
@@ -70,7 +70,7 @@ public class TableView {
         Month month = TimeUtils.getCurrentMonth();
         LocalDateTime firstDateTimeOfMonth = TimeUtils.getFirstDateOfMonth(month.getValue());
         LocalDateTime lastDateTimeOfMonth = TimeUtils.getLastDateOfMonth(month.getValue());
-        DefaultTableModel byDateRange = schedulerService.getByDateRange(firstDateTimeOfMonth, lastDateTimeOfMonth);
+        DefaultTableModel byDateRange = schedulerService.getByDateRangeAsDefaultTableModel(firstDateTimeOfMonth, lastDateTimeOfMonth);
 
         return byDateRange;
     }
