@@ -1,15 +1,10 @@
 package schnittker.tracking.threads;
 
 import schnittker.tracking.TrackingApplication;
-import schnittker.tracking.models.SchedulerModel;
 import schnittker.tracking.services.SchedulerService;
 import schnittker.tracking.utils.TimeUtils;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Timer;
